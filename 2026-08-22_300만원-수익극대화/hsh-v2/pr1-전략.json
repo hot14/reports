@@ -1,0 +1,37 @@
+{
+ "scenarios": [
+  {
+   "id": "S1",
+   "target_krw": 7330000,
+   "mdd_limit": 0.03
+  },
+  {
+   "id": "S2",
+   "target_krw": 8930000,
+   "mdd_limit": 0.1
+  },
+  {
+   "id": "S3",
+   "target_krw": 16010000,
+   "mdd_limit": 0.2
+  },
+  {
+   "id": "S4",
+   "target_krw": 18890000,
+   "mdd_limit": 0.35,
+   "note": "높은 실패 확률 전제 상한 탐색"
+  }
+ ],
+ "tracks": {
+  "investment": 0.45,
+  "side_hustle": 0.4,
+  "cash_reserve": 0.15
+ },
+ "evaluation_axes": [
+  "세후 기대수익",
+  "MDD 한도",
+  "주 시간 투입",
+  "실행 난이도",
+  "데이터 신뢰도"
+ ]
+}

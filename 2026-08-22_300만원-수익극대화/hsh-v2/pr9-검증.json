@@ -1,35 +1,38 @@
 {
- "generated_at": "2026-08-22T16:14:37.052Z",
- "version": 5,
+ "generated_at": "2026-08-22T16:40:50.631Z",
+ "version": 6,
  "checks": [
   {
-   "item": "차트 9종 에러 0",
+   "item": "차트 9종 에러 0 / 캔버스 9",
    "status": "PASS"
   },
   {
-   "item": "v5 신규 콘텐츠 전부 렌더 확인 (극값/스트레스/VKOSPI/실측 세후/이벤트/집중도/명목 고지)",
+   "item": "수치 무결성: 윤문 후 핵심 수치 10/10 보존 (시나리오/세후실송금/코스피/금리/VKOSPI/이벤트)",
+   "status": "PASS"
+  },
+  {
+   "item": "윤문 31건 반영 확인 (fluent/im-not-ai/stop-slop/law-mcp)",
+   "status": "PASS"
+  },
+  {
+   "item": "AI 티 제거: 본문 대시 11→0, hype 1→0, 명사구 종결 7→0",
+   "status": "PASS"
+  },
+  {
+   "item": "법령 원문 검증: 소득세법 127·129조, 조특법 86조의2(삭제)·86조의3 — 법제처 현행",
    "status": "PASS",
-   "evidence": "textContent 8/8 확인"
+   "evidence": "korean-law-mcp CLI (법제처 Open API)"
   },
   {
-   "item": "[파생] 수치 잔존 0 (KODEX YTD 코스피 실측 대체)",
-   "status": "PASS"
-  },
-  {
-   "item": "스트레스 테스트 산술 검증 (경로 재현성: 7월 -22.19%, 7/31 +17.91% 실측 반영)",
-   "status": "PASS"
-  },
-  {
-   "item": "세후 실수령액 외부 계산기 검증 (4,317,096원)",
-   "status": "PASS",
-   "evidence": "시그널플래너"
-  },
-  {
-   "item": "시그널 지표 개수 표기 일치 (6대)",
+   "item": "ISA 기술 정정: 86조의2 삭제 + 재경부 2026-08-03 개편안 확정 내용 반영",
    "status": "PASS"
   },
   {
    "item": "과대 표현 0 / 면책 유지",
+   "status": "PASS"
+  },
+  {
+   "item": "내용 앵커 보존 (수치·고유명사·검증 태그 전부 유지)",
    "status": "PASS"
   }
  ],

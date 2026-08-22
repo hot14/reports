@@ -1,41 +1,46 @@
 {
- "generated_at": "2026-08-22T03:18:16.455Z",
- "version": 3,
+ "generated_at": "2026-08-22T15:37:38.979Z",
+ "version": 4,
  "checks": [
   {
-   "item": "차트 9종 렌더링 (캔버스 9, __chartErrs 0)",
+   "item": "차트 9종 렌더링 에러 0",
    "status": "PASS",
-   "evidence": "로컬 서버 검증"
+   "evidence": "로컬 서버 canvas 9, __chartErrs 0"
   },
   {
-   "item": "v1 구수치 잔존 0건 (1,889/2,422/1,601만/1,295만/0.015% 전부 치환)",
+   "item": "시장 데이터 이중 교차검증 (코스피 6,912.95: 뉴스1+인베스팅)",
    "status": "PASS",
-   "evidence": "grep 및 textContent 스캔"
+   "evidence": "두 소스 종가 일치"
   },
   {
-   "item": "부업 소득 산술 검증 (시급 역산식 공개, v1 과대 정정)",
+   "item": "v3 수치 잔존 0건",
    "status": "PASS",
-   "evidence": "크몽 0.5~2만/건÷1~1.5h, 배달 286만÷25.3일÷8~10h"
+   "evidence": "grep 1,608/1,841/1,128만/940만 = 0"
   },
   {
-   "item": "세제 표기 외부 교차검증 (국내상장 해외ETF 보유기간과세)",
+   "item": "v4 수치 전면 반영 (KPI/표/차트/s9 일치)",
    "status": "PASS",
-   "evidence": "조선비즈 2025-08-23 + 머니투데이 세금해설 일치"
+   "evidence": "시나리오 차트 last: 731/904/1326/1644"
   },
   {
-   "item": "과대 표현 0회",
+   "item": "ISA·적립가능성·배달소득분류 신규 항목 출처 명시",
    "status": "PASS",
-   "evidence": "스캔 0건"
+   "evidence": "연합·매경·국세청(조세일보)"
   },
   {
-   "item": "면책·실패 시나리오 공정 서술 (S4 비관 1,128만 -23.5%)",
+   "item": "예금금리 공식 출처 (금감원 금융생활정보망)",
    "status": "PASS",
-   "evidence": "KPI/매트릭스/검증표 3곳"
+   "evidence": "세전 4.10%/세후 3.47%"
   },
   {
-   "item": "차트-본문 수치 일치 (시나리오 차트 last: 733/893/1308/1608 = KPI)",
+   "item": "과대표현 0 / 면책 이중 표기",
    "status": "PASS",
-   "evidence": "getOption 검증"
+   "evidence": "스캔"
+  },
+  {
+   "item": "MDD 경고 현실화 (시장 실현 -43.9% vs 방어선 -35% 명시)",
+   "status": "PASS",
+   "evidence": "KPI·시장환경·리스크 3곳"
   }
  ],
  "required_fixes": []

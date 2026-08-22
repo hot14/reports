@@ -1,46 +1,36 @@
 {
- "generated_at": "2026-08-22T15:37:38.979Z",
- "version": 4,
+ "generated_at": "2026-08-22T16:14:37.052Z",
+ "version": 5,
  "checks": [
   {
-   "item": "차트 9종 렌더링 에러 0",
-   "status": "PASS",
-   "evidence": "로컬 서버 canvas 9, __chartErrs 0"
+   "item": "차트 9종 에러 0",
+   "status": "PASS"
   },
   {
-   "item": "시장 데이터 이중 교차검증 (코스피 6,912.95: 뉴스1+인베스팅)",
+   "item": "v5 신규 콘텐츠 전부 렌더 확인 (극값/스트레스/VKOSPI/실측 세후/이벤트/집중도/명목 고지)",
    "status": "PASS",
-   "evidence": "두 소스 종가 일치"
+   "evidence": "textContent 8/8 확인"
   },
   {
-   "item": "v3 수치 잔존 0건",
-   "status": "PASS",
-   "evidence": "grep 1,608/1,841/1,128만/940만 = 0"
+   "item": "[파생] 수치 잔존 0 (KODEX YTD 코스피 실측 대체)",
+   "status": "PASS"
   },
   {
-   "item": "v4 수치 전면 반영 (KPI/표/차트/s9 일치)",
-   "status": "PASS",
-   "evidence": "시나리오 차트 last: 731/904/1326/1644"
+   "item": "스트레스 테스트 산술 검증 (경로 재현성: 7월 -22.19%, 7/31 +17.91% 실측 반영)",
+   "status": "PASS"
   },
   {
-   "item": "ISA·적립가능성·배달소득분류 신규 항목 출처 명시",
+   "item": "세후 실수령액 외부 계산기 검증 (4,317,096원)",
    "status": "PASS",
-   "evidence": "연합·매경·국세청(조세일보)"
+   "evidence": "시그널플래너"
   },
   {
-   "item": "예금금리 공식 출처 (금감원 금융생활정보망)",
-   "status": "PASS",
-   "evidence": "세전 4.10%/세후 3.47%"
+   "item": "시그널 지표 개수 표기 일치 (6대)",
+   "status": "PASS"
   },
   {
-   "item": "과대표현 0 / 면책 이중 표기",
-   "status": "PASS",
-   "evidence": "스캔"
-  },
-  {
-   "item": "MDD 경고 현실화 (시장 실현 -43.9% vs 방어선 -35% 명시)",
-   "status": "PASS",
-   "evidence": "KPI·시장환경·리스크 3곳"
+   "item": "과대 표현 0 / 면책 유지",
+   "status": "PASS"
   }
  ],
  "required_fixes": []

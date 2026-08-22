@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리포트 아카이브 | Report Archive</title>
+<style>
+  :root{
+    --navy:#1f3864; --blue:#2563eb; --blue-lt:#dbeafe; --bg:#f4f6f9; --card:#fff;
+    --line:#e5e7eb; --txt:#1f2937; --sub:#6b7280; --orange:#f59e0b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;min-height:100vh}
+  .wrap{max-width:1080px;margin:0 auto;padding:36px 20px 80px}
+  header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:28px}
+  header h1{font-size:26px;font-weight:800;letter-spacing:-.5px}
+  header h1 span{color:var(--blue)}
+  header .sub{font-size:13.5px;color:var(--sub);margin-top:6px}
+  .stats{display:flex;gap:12px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 18px;text-align:center;min-width:86px}
+  .stat .num{font-size:22px;font-weight:800;color:var(--navy)}
+  .stat .lab{font-size:11.5px;color:var(--sub);font-weight:600}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:22px}
+  .search{flex:1;min-width:220px;position:relative}
+  .search input{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;padding:11px 14px 11px 38px;font-size:14px;outline:none}
+  .search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.4}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 15px;font-size:13px;font-weight:700;color:var(--sub);cursor:pointer}
+  .chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:0 1px 3px rgba(15,23,42,.05);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(15,23,42,.09)}
+  .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+  .badge{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;background:var(--blue-lt);color:var(--blue);letter-spacing:.3px}
+  .badge.realty{background:#fef3c7;color:#b45309}
+  .badge.finance{background:#dcfce7;color:#15803d}
+  .badge.news{background:#fce7f3;color:#be185d}
+  .badge.data{background:#e0e7ff;color:#4338ca}
+  .badge.default{background:#f1f5f9;color:#475569}
+  .date{font-size:12px;color:var(--sub);font-weight:600;white-space:nowrap}
+  .card h2{font-size:16.5px;font-weight:800;margin-bottom:6px;line-height:1.4}
+  .card h2 a{color:var(--txt);text-decoration:none}
+  .card h2 a:hover{color:var(--blue)}
+  .src{font-size:12px;color:var(--sub);margin-bottom:10px;display:flex;gap:5px;align-items:flex-start}
+  .src::before{content:'▸';color:#9ca3af}
+  .card p{font-size:13px;color:#4b5563;margin-bottom:12px;flex:1}
+  .hl{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .hl span{font-size:11.5px;font-weight:700;background:#f8fafc;border:1px solid var(--line);border-radius:6px;padding:3px 9px;color:#374151}
+  .files{display:flex;flex-wrap:wrap;gap:8px;border-top:1px dashed var(--line);padding-top:12px}
+  .fl{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--blue);text-decoration:none;border:1px solid var(--blue-lt);background:#f8faff;border-radius:8px;padding:5px 11px}
+  .fl:hover{background:var(--blue-lt)}
+  .fl.x{color:#15803d;border-color:#bbf7d0;background:#f0fdf4}.fl.x:hover{background:#dcfce7}
+  .fl.c{color:#b45309;border-color:#fde68a;background:#fffbeb}.fl.c:hover{background:#fef3c7}
+  .fl.e{color:#475569;border-color:#e2e8f0;background:#f8fafc}.fl.e:hover{background:#f1f5f9}
+  .empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--sub)}
+  .empty b{font-size:16px;display:block;margin-bottom:6px;color:#4b5563}
+  footer{margin-top:40px;font-size:12px;color:var(--sub);text-align:center}
+  @media(max-width:640px){header h1{font-size:21px}.stats{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>📚 리포트 <span>아카이브</span></h1>
+      <div class="sub">Aside가 작성한 분석 리포트 모음 · 카탈로그 기준 <span id="upd"></span></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num" id="nTotal">0</div><div class="lab">전체 리포트</div></div>
+      <div class="stat"><div class="num" id="nCat">0</div><div class="lab">카테고리</div></div>
+      <div class="stat"><div class="num" id="nFile">0</div><div class="lab">보관 파일</div></div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="제목, 태그, 내용 검색... (예: 실거래가, 부동산)">
+    </div>
+    <div id="cats" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>파일 위치: ~/.aside/u/0/reports · 새 리포트는 자동으로 이 아카이브에 등록됩니다</footer>
+</div>
+
+<script>
+const CATALOG = {
+  "version": 1,
+  "updated": "2026-08-22",
+  "root": "~/.aside/u/0/reports",
+  "entries": [
+    {
+      "id": "2026-08-22_퇴직연금-포트폴리오",
+      "title": "퇴직연금 포트폴리오 심층 리포트 v2 (TDF2060 · 나스닥100 · S&P500, 검증·정정 판)",
+      "date": "2026-08-22",
+      "category": "금융",
+      "source": "제로인(펀드닥터·FunETF) 공개 API 일별 기준가 1,268 데이터포인트 + 삼성자산운용 공시 + 국세청·금융감독원·고용노동부 공식 자료 · v2에서 전 수치 재검증 및 9건 정정",
+      "summary": "2026-08-21 신청한 퇴직연금 3종(삼성코리아EMP적격TDF2060 867만·나스닥100 1,000만·S&P500 1,028만, 계 2,895만원)의 실제 기준가 데이터 기반 인터랙티브 심층 분석. 일별/월간/분기/연간 추이 차트, 보유종목·보수·운용사 상세, 연봉 6,200만원 세액공제·시그널 판별법·운영 루틴 전략 수록.",
+      "highlights": [
+        "실효 자산배분: 미국주식 65.2% + 국내주식 21.7% + 국내채권 5.7% + 현금 7.4% (주식 87% 공격형)",
+        "TDF2060 설정후 -11.89% (5/18 신설, 국내증시 급락 직격) vs 나스닥100 +61.18%·S&P500 3년 +77%",
+        "가중 총보수 0.63%/년 — 은행 IRP 평균 1.24% 대비 절반, 30년 수수료 절약 효과 약 6,000만원",
+        "연 900만 납입 시 세액공제 환급 118.8만원 (총급여 5,500만 초과 13.2% 구간)",
+        "30년 시나리오(월복리 정밀 재계산): 악재 4.37억 / 보수적 6.54억 / 기본 9.96억 / 역사평균 17.15억 (원금+월50만 적립)",
+        "[v2 정정] 2026.5~8월은 세 상품 모두 하락 (S&P -4.3%·나스닥 -7.2%·TDF -11.9%), S&P500 1년 +18.6%·운용역 권구황·순자산 6,285.6억 등 9건 시정"
+      ],
+      "files": {
+        "report": "2026-08-22_퇴직연금-포트폴리오/퇴직연금_포트폴리오_리포트.html",
+        "raw": "2026-08-22_퇴직연금-포트폴리오/펀드공시_API원본.json",
+        "evidence": "2026-08-22_퇴직연금-포트폴리오/assets/차트영역_스크린샷.png"
+      },
+      "tags": [
+        "퇴직연금",
+        "펀드",
+        "TDF",
+        "S&P500",
+        "나스닥100",
+        "자산배분",
+        "세액공제",
+        "인터랙티브"
+      ]
+    },
+    {
+      "id": "2026-08-22_사주사업화-벤치마킹",
+      "title": "사주 사업화 벤치마킹 리포트 (실행 도구 v4)",
+      "date": "2026-08-22",
+      "category": "사업·시장분석",
+      "source": "언론 보도·모바일인덱스·설문(엠브레인·어피티)·크몽·구글·OpenAI 요금표·대법원 판례·공정위 제재·특허청 상표 수수료·GitHub/npm 만세력 라이브러리 직접 검증·크몽 상품 44개 직접 수집 등 32건",
+      "summary": "Part 1 시장·14개 서비스 벤치마킹·가격·노하우·KPI·예산 / Part 2 리포트 자체 비판 12항목과 해결방안 5본(유닛 이코노믹스 실계산·법률 체크리스트·콜드스타트 GTM·무료 AI 대응·90일 Go/No-Go) / Part 3 검증 데이터와 실행 도구: 니치 화이트스페이스 매트릭스, 크몽 실측(중앙값 2.5만원·최다 15,504리뷰), 만세력 엔진 확정(manseryeok MIT·0원), 상표 3류 75만원 실무, 앱vs웹 결정트리, 경쟁 시나리오, 세금 보정, 인터랙티브 유닛 이코노믹스 계산기, 복사용 템플릿 부록(금지어·개인정보·환불·크몽문구·릴스 30선).",
+      "highlights": [
+        "[니치] 최대 화이트스페이스 '직장관계·팀궁합'(경쟁 0+수요 보도 확인), 반려동물·양자택일·부모궁합·B2B 진입 추천 순서 제시",
+        "[실측] 크몽 44개 직접 수집: 중앙값 25,000원, 리포트형 '운명감정서' 4,085리뷰 — AI PDF 리포트 모델 수요 증거, 최다 15,504리뷰(누적 4.6억 추정)",
+        "[기술] 만세력 엔진 확정: manseryeok(TS·MIT·KASI 정본·진태양시+서머타임+야자시 3관법) — 엔진 비용 0원, KASI API는 무료 상업가능",
+        "[법무] 상표 필수 3류(9·42·45) 셀프 출원 약 75만원 — 운세 본류는 45류(41류 아님), 심사 12.8개월, 출시 전 선출원이 핵심",
+        "[채널] 앱 vs 웹 결정트리: 90일 검증은 웹(PWA) — 수수료 2.9~3.5%로 앱 대비 최대 27%p 마진 우위",
+        "[세금] 월 700만 시나리오는 세후 실수령 400~500만원대 — 간이과세 한도(연 8천만) 도달 시 일반과세 전환",
+        "[도구] 인터랙티브 유닛 이코노믹스 계산기 내장 — CPI·전환율·ARPPU 입력 시 손익분기 재구매 수와 Go/Stop 판정 자동 출력",
+        "[부록] 복사용 템플릿: 금지어→대체어 8쌍, 개인정보 처리방침 6항목, 환불 정책 문구, 크몽 상품 설명 포맷, 릴스 30선"
+      ],
+      "files": {
+        "report": "2026-08-22_사주사업화-벤치마킹/사주사업화_리포트.html",
+        "raw": "2026-08-22_사주사업화-벤치마킹/사주사업화_데이터.json"
+      },
+      "tags": [
+        "사주",
+        "벤치마킹",
+        "사업모델",
+        "니치분석",
+        "유닛이코노믹스",
+        "법률리스크",
+        "GTM",
+        "실행계획",
+        "만세력",
+        "상표출원"
+      ]
+    },
+    {
+      "id": "2026-08-22_300만원-수익극대화",
+      "title": "300만원 시드 · 2027년 3월까지 수익 극대화 실전 리포트 (부업+투자 하이브리드)",
+      "date": "2026-08-22",
+      "category": "금융",
+      "source": "한국은행(기준금리 2.75%) · 한국거래소·연합뉴스(코스피 2025 +75.89%) · 삼성자산운용·머니투데이(KODEX200 YTD +133.6%→조정) · K-ETF/FunETF(TIGER 미국S&P500 1년 +19.87%) · 고용노동부·국토부 실태조사(배달 순소득 286만) · 크몽 공개 단가 · 국세청 세제 기준 — 실측 20건",
+      "summary": "연봉 6,200만원 직장인(공격적 성향, 주 11시간)이 시드 300만원으로 2027년 3월까지 목표 금액별로 수익을 극대화하는 4 시나리오(보수 733만~극한 1,889만, 낙관 2,422만)와 투자 5법+부업 5법 실행 프로세스, 시그널 판별법, 세금·리스크, 연간/분기/월간 인터랙티브 차트 수록.",
+      "highlights": [
+        "시나리오 4단계: S1 보수 733만(+1.9%) · S2 표준 893만(+3.9%) · S3 공격 1,601만(+5.2%) · S4 극한 1,889만(+8.6%, 비관 1,295만~낙관 2,422만)",
+        "핵심 발견: 7개월 승부는 수익률이 아니라 '유입 규모'가 92%를 결정 — 월 120만 적립 + 부업 세후 600만이 본체, 투자 수익은 +149만",
+        "시장 실측 반영: 코스피 2025 +75.89%(역대 3위) 후 2026년 6월 고점 대비 -21% 조정 국면 = 분할매수 구간 판정",
+        "부업 실태 기반: 배달 풀타임 순소득 월 286만(국토부)을 주 8시간 스케일링, 크몽 원고 건당 0.5~2만원 단가 기반 램프업 곡선",
+        "기준금리 2.75% 인상 사이클 시작(2023년 이후 첫) — 예금 최고 연 3.65~3.70% vs 리츠 배당 6~8% 자산간 격차 데이터",
+        "시그널 판별법: 추세·수급·괴리·금리·과열 5대 지표 + 부업 4대 지표, MDD -35% 방어선 규칙 포함"
+      ],
+      "files": {
+        "report": "2026-08-22_300만원-수익극대화/300만원_수익극대화_리포트.html",
+        "raw": "2026-08-22_300만원-수익극대화/시나리오데이터.json",
+        "evidence": "2026-08-22_300만원-수익극대화/assets/요약탭_스크린샷.png"
+      },
+      "tags": []
+    },
+    {
+      "id": "2026-08-21_지붕크랙보수공사-가이드",
+      "title": "지붕 크랙 보수공사 총정리 리포트 (한국)",
+      "date": "2026-08-21",
+      "category": "건설·유지관리",
+      "source": "국토교통부 표준품셈(2025)·대한건설협회 노임단가(2025)·생활법령정보(공동주택관리법) 및 업체 공개 단가·시공 사례 28개 출처",
+      "summary": "지붕 크랙 보수의 원인 진단(KDS 허용균열폭 0.3mm 기준)부터 인젝션 9단계·우레탄 도막 공정, 공법별 평당 단가(우레탄 7.8만~15만원, 폴리우레아 4.2만~8만원, 스틀 17만~25만원), 표준품셈 기반 인원(30평 방수공 9.2인·일)·공기, 예산 시나리오 9종, 시공능력평가 TOP10 업체 현황까지 정리한 종합 가이드.",
+      "highlights": [
+        "공법별 평당 단가: 우레탄 7.8만~15만원 / 폴리우레아 4.2만~8만원 / 스틀 방수 17만~25만원",
+        "표준품셈 검증: 30평 우레탄 노무 방수공 9.2인·일 + 보통인부 4.4인·일 (약 278만원)",
+        "법정 하자담보: 공동주택 방수공사 5년(공동주택관리법 시행령 별표4), 내력구조부 10년",
+        "예산 시나리오 9종: 크랙 부분보수 60만원~ / 30평 전체방수 230만~750만원 / 100평 780만~2,000만원",
+        "습식·방수공사 시공능력평가 TOP10 (2026): 아이알에스건설·거정건설·대몽건설 등"
+      ],
+      "files": {
+        "report": "2026-08-21_지붕크랙보수공사-가이드/지붕크랙보수공사_리포트.html",
+        "raw": "2026-08-21_지붕크랙보수공사-가이드/지붕크랙보수공사_데이터.json",
+        "evidence": "2026-08-21_지붕크랙보수공사-가이드/assets/증빙_2025_건설노임단가.png"
+      },
+      "tags": [
+        "지붕보수",
+        "크랙보수",
+        "방수공사",
+        "옥상방수",
+        "인젝션",
+        "공사비",
+        "표준품셈"
+      ]
+    },
+    {
+      "id": "2026-08-21_eunma-apt",
+      "title": "대치동 은마아파트 실거래가 리포트",
+      "date": "2026-08-21",
+      "category": "부동산",
+      "source": "국토교통부 실거래가공개시스템 (rt.molit.go.kr) 자료제공 원본 CSV",
+      "summary": "최근 1년(계약일 2025-08-22~2026-08-21) 신고 45건 중 유효 38건 전수 분석. 33PY형 평균 35.6억, 37PY형 평균 39.8억. 반기 평균가 33PY -5.6%, 37PY -8.0% 하락.",
+      "highlights": [
+        "유효 거래 38건 (해제 7건 제외)",
+        "33PY 평균 355,630만원",
+        "37PY 평균 397,933만원",
+        "반기 평균가 -5.6% / -8.0%"
+      ],
+      "files": {
+        "report": "2026-08-21_은마아파트-실거래가/은마아파트_실거래가_리포트.html",
+        "xlsx": "2026-08-21_은마아파트-실거래가/은마아파트_실거래가_분석_국토부공식.xlsx",
+        "raw": "2026-08-21_은마아파트-실거래가/은마아파트_실거래가_원본_국토부다운로드.csv",
+        "evidence": "2026-08-21_은마아파트-실거래가/assets/국토부_조회화면_증빙.png"
+      },
+      "tags": [
+        "실거래가",
+        "아파트",
+        "강남구",
+        "대치동",
+        "은마",
+        "국토부"
+      ]
+    }
+  ]
+};
+
+const catCls = c => ({'부동산':'realty','금융':'finance','뉴스':'news','데이터':'data'}[c] || 'default');
+const entries = CATALOG.entries;
+
+// 통계
+document.getElementById('nTotal').textContent = entries.length;
+document.getElementById('nCat').textContent = new Set(entries.map(e=>e.category)).size;
+document.getElementById('nFile').textContent = entries.reduce((a,e)=>a+Object.keys(e.files).length,0);
+document.getElementById('upd').textContent = CATALOG.updated;
+
+// 카테고리 칩
+const cats = ['전체', ...new Set(entries.map(e=>e.category))];
+let curCat = '전체';
+document.getElementById('cats').innerHTML = cats.map((c,i)=>`<button class="chip${i===0?' on':''}" data-c="${c}">${c}</button>`).join('');
+
+function fileLabel(k){
+  return {report:'리포트 열기', xlsx:'엑셀', raw:'원본데이터', evidence:'증빙'}[k] || k;
+}
+function fileCls(k){ return {report:'', xlsx:'x', raw:'c', evidence:'e'}[k] || ''; }
+
+function render(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const list = entries.filter(e=>{
+    if(curCat !== '전체' && e.category !== curCat) return false;
+    if(!q) return true;
+    const hay = [e.title, e.summary, e.source, ...(e.tags||[]), ...(e.highlights||[])].join(' ').toLowerCase();
+    return hay.includes(q);
+  });
+  document.getElementById('grid').innerHTML = list.length ? list.map(e=>`
+    <div class="card">
+      <div class="top"><span class="badge ${catCls(e.category)}">${e.category}</span><span class="date">${e.date}</span></div>
+      <h2><a href="${e.files.report}" target="_blank">${e.title}</a></h2>
+      <div class="src">${e.source}</div>
+      <p>${e.summary}</p>
+      <div class="hl">${(e.highlights||[]).map(h=>`<span>${h}</span>`).join('')}</div>
+      <div class="files">${Object.entries(e.files).map(([k,v])=>`<a class="fl ${fileCls(k)}" href="${v}" target="_blank">${fileLabel(k)}</a>`).join('')}</div>
+    </div>`).join('')
+  : `<div class="empty"><b>조건에 맞는 리포트가 없습니다</b>다른 검색어나 카테고리를 시도해보세요</div>`;
+}
+document.getElementById('cats').addEventListener('click',e=>{
+  const b = e.target.closest('.chip'); if(!b) return;
+  document.querySelectorAll('#cats .chip').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); curCat = b.dataset.c; render();
+});
+document.getElementById('q').addEventListener('input', render);
+render();
+</script>
+</body>
+</html>

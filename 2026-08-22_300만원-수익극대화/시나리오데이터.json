@@ -469,7 +469,7 @@
    40
   ]
  },
- "v": 5,
+ "v": 6,
  "kb": {
   "pastReports": [
    {
@@ -696,5 +696,32 @@
   "annual": 51805400,
   "basis": "시그널플래너·국세청 간이세액표, 비과세 20만·부양가족 1명",
   "source": "salary.signalplanner.co.kr/income/6200"
+ },
+ "polish_v6": {
+  "tools": [
+   "fluent-korean (snflkd)",
+   "humanize-korean/im-not-ai (epoko77-ai)",
+   "stop-slop (hardikpandya)",
+   "korean-law-mcp (chrisryugj)"
+  ],
+  "method": "4개 스킬 규칙 결합 국소 윤문 — fluent-korean(조사·어미 복원, 완결형 문장, 대시 자제) + im-not-ai(번역투·hype·AI관용구 제거, 수치·내용앵커 불변) + stop-slop(직설화, 리듬 다양화) + korean-law-mcp(법령 원문 검증 반영)",
+  "edits": 31,
+  "scope": "서사 블록(desc/mc-body/note/계명/타임라인/세금표) — 수치·차트·표 데이터 미변경",
+  "law_verification": {
+   "소득세법 제127조": "원천징수대상 사업소득 규정 확인 (법제처 현행 2026-07-01 시행분)",
+   "소득세법 제129조": "인적용역 원천징수세율 확인",
+   "조세특례제한법 제86조의2": "삭제 표기 확인 (2025-12-23 공포분) + 재경부 2026-08-03 세제개편안: 2026년 가입분 현행 유지(200/400만 비과세+9%), 2027-01-01부터 이월 폐지·총5년 제한·일몰 2029-12-31, 생산적금융 ISA 신설(국내자산 전액 비과세·총2억·10년·청년 납입금 10% 소득공제)",
+   "조세특례제한법 제86조의3": "소상공인 공제 조문임을 확인 (ISA 아님)"
+  },
+  "ai_tell_before": {
+   "대시(본문)": 11,
+   "hype(압도적)": 1,
+   "명사구종결 note": 7
+  },
+  "ai_tell_after": {
+   "대시(본문)": 0,
+   "hype": 0,
+   "명사구종결 note": 0
+  }
  }
 }

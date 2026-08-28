@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>남촌물상TV 채널 전체 영상 문서 아카이브</title>
+<style>
+
+:root{--bg:#fafaf8;--card:#fff;--ink:#1a1a18;--sub:#6b6b66;--line:#e5e3dd;--accent:#8a6d1a;--chip:#f0ead8}
+*{box-sizing:border-box}body{margin:0;font-family:'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+.wrap{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.crumb{font-size:13px;color:var(--sub);margin-bottom:14px}
+h1{font-size:24px;line-height:1.4;margin:6px 0 18px}
+table.meta{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:14px;margin-bottom:22px}
+table.meta th,table.meta td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.meta tr:last-child th,table.meta tr:last-child td{border-bottom:none}
+table.meta th{width:110px;color:var(--sub);font-weight:600;background:#f6f5f1}
+.sec{font-size:15px;font-weight:700;margin:26px 0 8px;display:flex;align-items:center;gap:8px}
+.desc{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;white-space:pre-wrap;font-size:14px;color:#333}
+.tags{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.tag{background:var(--chip);border-radius:20px;padding:2px 10px;font-size:12.5px;color:#5d5122}
+.tr{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 0;font-size:14.5px}
+.tr .row{display:flex;gap:10px;padding:5px 16px}
+.tr .row:hover{background:#f7f5ef}
+.tr .t{flex:0 0 64px;color:var(--accent);font-variant-numeric:tabular-nums;font-size:13px;padding-top:2px}
+.notice{background:#fdf6e3;border:1px solid #ecd9a0;border-radius:8px;padding:10px 14px;font-size:13px;color:#6b5b1e;margin:18px 0}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:34px;font-size:14px}
+.nav a{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 14px;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.thumb{width:100%;max-width:480px;border-radius:8px;border:1px solid var(--line);display:block;margin:4px 0 6px}
+footer{margin-top:40px;font-size:12.5px;color:var(--sub);border-top:1px solid var(--line);padding-top:14px}
+
+.hero{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:20px}
+.hero h1{margin:0 0 4px;font-size:26px}
+.hero .sub{color:var(--sub);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0 0}
+.stat{background:#f6f5f1;border-radius:8px;padding:10px 12px}
+.stat .k{font-size:12px;color:var(--sub)}.stat .v{font-size:16px;font-weight:700;margin-top:2px}
+.chan{white-space:pre-wrap;font-size:13.5px;background:#f6f5f1;border-radius:8px;padding:12px 14px;margin-top:14px;color:#333}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:18px 0 10px}
+.controls input[type=text]{flex:1;min-width:220px;padding:9px 13px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+.controls select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;background:#fff}
+.count{font-size:13px;color:var(--sub)}
+table.list{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13.5px}
+table.list th{position:sticky;top:0;background:#f6f5f1;text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--sub);white-space:nowrap}
+table.list td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+table.list tr:last-child td{border-bottom:none}
+table.list tr:hover td{background:#faf8f2}
+td.no{color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.dur{white-space:nowrap;font-variant-numeric:tabular-nums}
+td.dt{white-space:nowrap;color:var(--sub)}
+.ttl{font-weight:600}
+.ttl a{color:var(--ink)}
+.ttl a:hover{color:var(--accent)}
+.yt{font-size:12px;color:var(--accent);white-space:nowrap}
+.snip{display:block;color:var(--sub);font-size:12.5px;margin-top:2px}
+mark{background:#ffe9a8;padding:0 1px}
+.pill{display:inline-block;font-size:11px;border-radius:12px;padding:1px 8px;margin-left:6px;vertical-align:1px}
+.pill.s{background:#e8f0e4;color:#3c6329}.pill.v{background:#e7eef7;color:#2c5282}.pill.n{background:#f3e0e0;color:#8a3232}
+.notice{background:#fdf6e3;border:1px solid #ecd9a0;border-radius:8px;padding:10px 14px;font-size:13px;color:#6b5b1e;margin:14px 0}
+footer{margin-top:36px;font-size:12.5px;color:var(--sub);border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+<h1>남촌물상TV 채널 전체 영상 문서 아카이브</h1>
+<div class="sub">김대영 교수(국민대학교 동양철학) 사주·물상론 채널 · 유튜브 채널 <a href="https://www.youtube.com/channel/UCYDMmKpZc5tn25ZEJsDDz5w" target="_blank" rel="noopener">UCYDMmKpZc5tn25ZEJsDDz5w</a> (@NAMCHON-TV) · 수집 2026-08-28 23:43 (KST)</div>
+<div class="stats"><div class="stat"><div class="k">동영상</div><div class="v">205편</div></div><div class="stat"><div class="k">Shorts</div><div class="v">196편</div></div><div class="stat"><div class="k">총 영상 길이(동영상)</div><div class="v">69시간 54분</div></div><div class="stat"><div class="k">자막 수집</div><div class="v">400 / 401편 (1,604,237자)</div></div><div class="stat"><div class="k">최초 게시</div><div class="v">2023-07-31</div></div><div class="stat"><div class="k">최근 게시</div><div class="v">2026-08-26</div></div></div>
+<details style="margin-top:14px"><summary style="cursor:pointer;font-size:13.5px;color:var(--sub)">채널 소개 원문 보기</summary><div class="chan">⛳️.  남촌.  김대영 교수 프로필.
+               - 원광대학교 동양대학원 철학과 졸업
+학위논문 ;  陰陽五行에 대한 木行의 硏究
+               - 국민대학교  동양철학. 교수
+               -  동방문화대학원 대학교  교수
+               
+저.   서  : 남촌현대물상론 ( 출판사 :문학공원)    
+             : 남촌물상론사례집( 출판사  문학공원)      
+             : 유튜브 :  남촌물상 TV
+
+* 물상론으로 쉽게 배우고 정확하게 풀어내는
+   냠촌물상론 사례집이 출판되었습니다. 
+
+          💗    남촌 물상론 교육과정 안내.
+         - 기초반 : 동방문화대학원  (기초반)
+         - 창업반 : 안양시 만안구 안양로 316
+           사무실 :  (본프라자 3층. 310호)  
+       
+        ❤️  사주상담 . 작명. 택일  궁합. 취업
+        💗  이메일 : kdy6645@daum.net
+        💗  상담전화: 010-3139-6645</div></details>
+</div>
+
+<div class="controls">
+<input type="text" id="q" placeholder="제목·설명·자막 전문 검색 (예: 갑목, 결혼, 직업, 재물)">
+<select id="kind"><option value="all">전체</option><option value="video">동영상</option><option value="shorts">Shorts</option></select>
+<select id="trOnly"><option value="">자막 전체</option><option value="1">자막 있는 영상만</option></select>
+<span class="count" id="cnt"></span>
+</div>
+
+<div class="notice">이 아카이브는 채널의 공개 영상 401편 전부를 문서화한 것입니다. 각 영상 문서에는 메타데이터, 설명 원문, YouTube 한국어 자동생성 자막 전문(타임스탬프)이 들어 있습니다. 자막은 자동음성인식 원문 그대로 보존했으므로 표기 오류가 남아 있을 수 있고, 영상 화면의 도표 등 시각 자료는 포함되지 않습니다.</div>
+
+<table class="list" id="tbl">
+<thead><tr><th>번호</th><th>제목</th><th>게시일</th><th>길이</th><th>조회수</th><th>자막</th><th>원본</th></tr></thead>
+<tbody id="rows"></tbody>
+</table>
+
+<footer>남촌물상TV(김대영 교수) 채널 문서화 아카이브 · 문서 수 401페이지 · 원본 영상과 모든 권리는 채널 운영자에 있습니다 · 생성: 2026-08-28 23:43 (KST)</footer>
+</div>
+<script src="data/videos.js"></script>
+<script src="data/transcripts.js"></script>
+<script>
+var state = { q: '', kind: 'all', trOnly: false };
+var $ = function (id) { return document.getElementById(id); };
+function norm(s) { return (s || '').toLowerCase().replace(/\s+/g, ' '); }
+function render() {
+  var q = norm(state.q.trim());
+  var rows = [];
+  for (var i = 0; i < CATALOG.length; i++) {
+    var v = CATALOG[i];
+    if (state.kind !== 'all' && v.kind !== state.kind) continue;
+    if (state.trOnly && !v.tr) continue;
+    if (q) {
+      var hitTitle = norm(v.title).indexOf(q) >= 0;
+      var hitDesc = norm(v.desc).indexOf(q) >= 0;
+      var trText = TRANSCRIPTS[v.videoId] || '';
+      var hitTr = trText.toLowerCase().indexOf(q) >= 0;
+      if (!hitTitle && !hitDesc && !hitTr) continue;
+      var snip = '';
+      if (hitTr && !hitTitle && !hitDesc) {
+        var idx = trText.toLowerCase().indexOf(q);
+        var s = Math.max(0, idx - 30);
+        snip = (s > 0 ? '…' : '') + trText.slice(s, idx + q.length + 60) + '…';
+      }
+      rows.push({ v: v, snip: snip });
+    } else {
+      rows.push({ v: v, snip: '' });
+    }
+  }
+  var html = '';
+  for (var j = 0; j < rows.length; j++) {
+    var v = rows[j].v;
+    var noStr = v.kind === 'shorts' ? 'S' + String(v.no).padStart(4, '0') : 'V' + String(v.no).padStart(4, '0');
+    var pill = v.kind === 'shorts' ? '<span class="pill s">쇼츠</span>' : '<span class="pill v">동영상</span>';
+    var trCell = v.tr > 0 ? v.tr.toLocaleString() + '구간' : '<span style="color:#b3543f">없음</span>';
+    html += '<tr><td class="no">' + noStr + '</td>' +
+      '<td class="ttl"><a href="videos/' + v.file + '">' + esc2(v.title) + '</a>' + pill +
+      (rows[j].snip ? '<span class="snip">…' + esc2(rows[j].snip) + '…</span>' : '') + '</td>' +
+      '<td class="dt">' + esc2(v.date) + '</td>' +
+      '<td class="dur">' + dur2(v.dur) + '</td>' +
+      '<td>' + v.views.toLocaleString() + '</td>' +
+      '<td>' + trCell + '</td>' +
+      '<td class="yt"><a href="https://www.youtube.com/watch?v=' + v.videoId + '" target="_blank" rel="noopener">YouTube↗</a></td></tr>';
+  }
+  $('rows').innerHTML = html || '<tr><td colspan="7" style="color:#999;padding:20px">검색 결과가 없습니다.</td></tr>';
+  $('cnt').textContent = rows.length + ' / ' + CATALOG.length + '편';
+}
+function esc2(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function dur2(sec) { sec = Math.round(sec || 0); var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60; var mm = String(m).padStart(2, '0'), ss = String(s).padStart(2, '0'); return h > 0 ? h + ':' + mm + ':' + ss : m + ':' + ss; }
+var deb;
+$('q').addEventListener('input', function (e) { clearTimeout(deb); var val = e.target.value; deb = setTimeout(function () { state.q = val; render(); }, 200); });
+$('kind').addEventListener('change', function (e) { state.kind = e.target.value; render(); });
+$('trOnly').addEventListener('change', function (e) { state.trOnly = !!e.target.value; render(); });
+render();
+</script>
+</body>
+</html>

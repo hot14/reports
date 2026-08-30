@@ -3,178 +3,154 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>남촌물상TV 지식그래프 탐색기</title>
+<title>남촌물상TV 지식 탐색기</title>
 <style>
-:root{--bg:#0e1116;--panel:#161b22;--ink:#e6edf3;--sub:#8b949e;--line:#30363d;--acc:#d29922;--vid:#58a6ff;--con:#d29922;--cha:#3fb950;--ser:#bc8cff}
+:root{--bg:#fafaf8;--card:#fff;--ink:#1a1a18;--sub:#6b6b66;--line:#e5e3dd;--acc:#8a6d1a;--chip:#f0ead8}
 *{box-sizing:border-box}body{margin:0;font-family:'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
-header{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-header h1{font-size:17px;margin:0}
-header a{color:var(--vid);text-decoration:none;font-size:13px}
-#q{flex:1;min-width:220px;padding:9px 13px;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--ink);font-size:14px}
-select{padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--ink)}
-main{display:flex;height:calc(100vh - 62px)}
-#graph{flex:1;position:relative}
-#graph canvas{display:block}
-#side{width:380px;border-left:1px solid var(--line);overflow-y:auto;padding:14px}
-.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;margin-bottom:10px}
-.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
-h3{font-size:14px;margin:14px 0 8px;color:var(--acc)}
-.item{padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:8px;background:var(--panel);cursor:pointer;font-size:13px}
-.item:hover{border-color:var(--acc)}
-.item .t{font-weight:600;margin-bottom:3px}
-.item .m{color:var(--sub);font-size:12px}
-.seg{padding:7px 10px;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer}
-.seg:hover{background:#1c2129}
-.seg .tt{color:var(--acc);font-variant-numeric:tabular-nums;margin-right:8px;font-size:12px}
-.seg mark{background:#634400;color:#ffe08a;padding:0 2px;border-radius:2px}
-.empty{color:var(--sub);padding:20px;text-align:center;font-size:13px}
+header{padding:16px 24px;border-bottom:1px solid var(--line);background:var(--card)}
+header h1{font-size:18px;margin:0 0 4px}
+header .sub{font-size:13px;color:var(--sub)}
+header .sub a{color:var(--acc)}
+main{max-width:1000px;margin:0 auto;padding:20px 24px 80px}
+.guide{background:#eef4fb;border:1px solid #c5d8ec;border-radius:10px;padding:14px 18px;font-size:13.5px;line-height:1.9;margin-bottom:20px;color:#2a4a6b}
+.guide b{color:#1a3a5c}
+input#q{width:100%;padding:12px 16px;border:2px solid var(--line);border-radius:10px;font-size:15px;background:var(--card);color:var(--ink)}
+.results{margin-top:16px}
+.cat-head{font-size:15px;font-weight:700;margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--acc);color:var(--acc)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.concept-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;cursor:pointer;font-size:13.5px}
+.concept-card:hover{border-color:var(--acc);background:#fdf9ee}
+.concept-card .cnt{float:right;color:var(--sub);font-size:12px}
+.video-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:10px}
+.video-item .vt{font-size:14.5px;font-weight:700;margin-bottom:6px}
+.video-item .vt a{color:var(--ink);text-decoration:none}
+.video-item .vt a:hover{color:var(--acc)}
+.video-item .vi{font-size:12.5px;color:var(--sub);display:flex;gap:14px;flex-wrap:wrap}
+.video-item .ts{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.video-item .ts a{background:var(--chip);color:#5d5122;border-radius:4px;padding:2px 8px;font-size:12px;text-decoration:none;font-variant-numeric:tabular-nums}
+.video-item .ts a:hover{background:#e8dcbe}
+.board-tag{display:inline-block;background:#e8f5e9;color:#2e7d32;border-radius:4px;padding:1px 7px;font-size:11.5px;margin-top:6px}
+.board-tag.low{background:#fbe9e7;color:#c62828}
+.empty{color:var(--sub);text-align:center;padding:40px;font-size:14px}
+.back{cursor:pointer;color:var(--acc);font-size:13.5px;margin-bottom:14px}
 </style>
 </head>
 <body>
 <header>
-<h1>남촌물상TV 지식그래프</h1>
-<a href="../index.html">← 문서 아카이브</a>
-<input id="q" placeholder="개념 또는 자막 전문 검색 (예: 갑기합, 을목 일간, 재물)">
-<select id="mode"><option value="auto">자동</option><option value="graph">그래프</option><option value="seg">자막 전문</option></select>
-<span id="stat" style="color:var(--sub);font-size:12px"></span>
+<h1>남촌물상TV 지식 탐색기</h1>
+<div class="sub">401편 강의·상담 자막 + 칠판 원국 판독 통합 검색 · <a href="../index.html">← 문서 아카이브</a></div>
 </header>
 <main>
-<div id="graph"><canvas id="cv"></canvas></div>
-<div id="side"><div class="empty">노드를 클릭하거나 검색하세요</div></div>
+<div class="guide">
+<b>사용법 3단계</b><br>
+<b>①</b> 아래에서 카테고리를 고르거나 검색창에 찾고 싶은 말(갑기합, 을목 일간, 재물 등)을 입력<br>
+<b>②</b> 관련 영상 목록이 나옴<br>
+<b>③</b> 타임스탬프 클릭 → 유튜브 해당 장면으로 바로 이동<br>
+💡 <b>칠판</b> 버튼이 있는 영상은 교수님이 칠판에 쓴 사주 원국 판독 결과도 함께 표시됩니다.
+</div>
+<input id="q" placeholder="검색: 갑기합, 을목 일간, 재물, 결혼, 도화 ...">
+<div id="content"></div>
 </main>
 <script src="kg.json"></script>
+<script src="boards_data.json"></script>
 <script src="segments.json"></script>
 <script>
-/* kg.json / segments.json은 var KG= / var SEG= 형태로 로딩됨 */
-const nodes = KG.nodes, edges = KG.edges, segs = SEG;
+const nodes = KG.nodes, edges = KG.edges, segs = SEG, boards = BOARDS;
 const byId = {}; nodes.forEach(n => byId[n.id] = n);
-const adj = {}; edges.forEach(e => { (adj[e.s] = adj[e.s] || []).push({ id: e.t, w: e.w, f: e.f, x: e.x }); (adj[e.t] = adj[e.t] || []).push({ id: e.s, w: e.w, f: e.f, x: e.x }); });
-const colors = { video: '#58a6ff', series: '#bc8cff', chart: '#3fb950' };
-const ccolor = { '일간': '#f0883e', '합충': '#f85149', '십성': '#d2a8ff', '신살': '#79c0ff', '오행': '#56d364', '주제': '#e3b341', '물상론': '#ff7b72', '개념': '#8b949e' };
-const cOf = n => n.type === 'video' ? colors.video : n.type === 'series' ? colors.ser : n.type === 'chart' ? colors.cha : (ccolor[n.type] || '#d29922');
-const $side = document.getElementById('side'), $stat = document.getElementById('stat'), $q = document.getElementById('q');
-
-/* ---- 캔버스 force graph ---- */
-const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
-let W, H, running = false;
-function resize() { W = cv.width = cv.parentElement.clientWidth; H = cv.height = cv.parentElement.clientHeight; }
-resize(); addEventListener('resize', resize);
-// 초기 좌표: 원형 배치
-const pos = {}, vel = {};
-nodes.forEach((n, i) => { const a = i / nodes.length * Math.PI * 2; pos[n.id] = { x: Math.cos(a) * 400 + 700, y: Math.sin(a) * 400 + 450 }; });
-let focusId = null;
-function step() {
-  // 반발력
-  for (const a of nodes) for (const b of nodes) {
-    if (a.id >= b.id) continue;
-    const dx = pos[b.id].x - pos[a.id].x, dy = pos[b.id].y - pos[a.id].y, d2 = dx * dx + dy * dy + 0.01, f = 60000 / d2;
-    const d = Math.sqrt(d2), ux = dx / d, uy = dy / d;
-    pos[a.id].x -= ux * f; pos[a.id].y -= uy * f; pos[b.id].x += ux * f; pos[b.id].y += uy * f;
-  }
-  // 스프링 (엣지)
-  for (const e of edges) {
-    const a = pos[e.s], b = pos[e.t]; if (!a || !b) continue;
-    const dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx * dx + dy * dy) || 1, rest = 110;
-    const f = (d - rest) * 0.004, ux = dx / d, uy = dy / d;
-    a.x += ux * f; a.y += uy * f; b.x -= ux * f; b.y -= uy * f;
-  }
-  // 중심引力
-  for (const id in pos) { pos[id].x += (700 - pos[id].x) * 0.002; pos[id].y += (450 - pos[id].y) * 0.002; }
-}
-let cam = { x: 0, y: 0, z: 0.28 };
-function draw() {
-  ctx.fillStyle = '#0e1116'; ctx.fillRect(0, 0, W, H);
-  ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(cam.z, cam.z); ctx.translate(-cam.x, -cam.y);
-  ctx.strokeStyle = '#2b3138';
-  for (const e of edges) { const a = pos[e.s], b = pos[e.t]; if (!a || !b) continue; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
-  for (const n of nodes) {
-    const p = pos[n.id]; if (!p) continue;
-    const r = n.type === 'video' ? 3.5 + Math.log(n.views + 10) * 0.9 : n.type === 'chart' ? 5 : n.type === 'series' ? 9 : 5 + Math.min(8, (n.count || 0) * 0.35);
-    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 7); ctx.fillStyle = cOf(n); ctx.fill();
-    if (n.id === focusId || cam.z > 1.4 && n.type !== 'video') { ctx.fillStyle = '#e6edf3'; ctx.font = '11px sans-serif'; ctx.fillText(n.label.slice(0, 24), p.x + r + 3, p.y + 4); }
-    else if (n.type === 'series' || (n.type !== 'video' && cam.z > 0.8)) { ctx.fillStyle = '#c9d1d9'; ctx.font = '11px sans-serif'; ctx.fillText(n.label.slice(0, 20), p.x + r + 3, p.y + 4); }
-  }
-  ctx.restore();
-}
-function loop() { if (running) { step(); draw(); } requestAnimationFrame(loop); }
-loop(); running = true; draw();
-// 줌/팬
-cv.addEventListener('wheel', e => { e.preventDefault(); const k = e.deltaY < 0 ? 1.12 : 0.9; const mx = (e.offsetX - W / 2) / cam.z + cam.x, my = (e.offsetY - H / 2) / cam.z + cam.y; cam.z = Math.max(0.05, Math.min(8, cam.z * k)); cam.x = mx - (e.offsetX - W / 2) / cam.z; cam.y = my - (e.offsetY - H / 2) / cam.z; if (!running) draw(); }, { passive: false });
-let drag = null;
-cv.addEventListener('mousedown', e => drag = { x: e.offsetX, y: e.offsetY, cx: cam.x, cy: cam.y });
-addEventListener('mousemove', e => { if (drag) { cam.x = drag.cx - (e.offsetX - drag.x) / cam.z; cam.y = drag.cy - (e.offsetY - drag.y) / cam.z; if (!running) draw(); } });
-addEventListener('mouseup', () => drag = null);
-function toWorld(e) { return { x: (e.offsetX - W / 2) / cam.z + cam.x, y: (e.offsetY - H / 2) / cam.z + cam.y }; }
-cv.addEventListener('click', e => {
-  const w = toWorld(e); let best = null, bd = 12 / cam.z;
-  for (const n of nodes) { const p = pos[n.id]; if (!p) continue; const d = Math.hypot(p.x - w.x, p.y - w.y); if (d < bd) { bd = d; best = n; } }
-  if (best) { if (best.type === 'video') return openVideo(best); showNode(best.id); }
+const VT = {}; nodes.forEach(n => { if (n.type === 'video') VT[n.id.slice(2)] = n; });
+const cvIdx = {}; edges.forEach(e => {
+  const cs = e.s.startsWith('v:') ? e.t : e.s;
+  const vs = e.s.startsWith('v:') ? e.s : e.t;
+  if (byId[vs]?.type !== 'video') return;
+  const cn = byId[cs]; if (!cn || ['video','series','chart'].includes(cn.type)) return;
+  (cvIdx[cs] = cvIdx[cs] || []).push({ vid: vs });
 });
-function openVideo(n) {
-  const url = 'https://www.youtube.com/watch?v=' + n.id.slice(2) + (lastT ? '&t=' + lastT + 's' : '');
-  window.open(url, '_blank');
-}
-let lastT = null;
-function showNode(id) {
-  focusId = id; const n = byId[id]; lastT = null;
-  cam.x = pos[id].x; cam.y = pos[id].y; if (cam.z < 1) cam.z = 1.6;
-  let html = '<h3>' + esc(n.label) + '</h3>';
-  html += '<div class="legend"><span><span class="dot" style="background:' + cOf(n) + '"></span>' + typeLabel(n.type) + '</span>' + (n.date ? '<span>' + n.date + '</span>' : '') + (n.views ? '<span>조회 ' + n.views.toLocaleString() + '</span>' : '') + (n.count != null ? '<span>언급 ' + n.count + '영상</span>' : '') + '</div>';
-  const rel = (adj[id] || []).slice().sort((a, b) => b.w - a.w);
-  if (n.type === 'video') {
-    html += '<h3>관련 개념</h3>';
-    for (const r of rel) { const rn = byId[r.id]; if (!rn || rn.type !== 'chart' && rn.type !== 'series' && rn.type === 'video') continue; if (rn.type === 'video') continue; html += '<div class="item" onclick="showNode(\'' + r.id + '\')"><div class="t">' + esc(rn.label) + '</div><div class="m">언급 ' + r.w + '회' + (r.f != null ? ' · 첫 등장 ' + fmt(r.f) : '') + '</div></div>'; }
-    html += '<h3>바로가기</h3><div class="item" onclick="window.open(\'https://www.youtube.com/watch?v=' + n.id.slice(2) + '\')">YouTube에서 보기 ↗</div><div class="item" onclick="window.open(\'../videos/' + n.file + '\')">문서 전체 보기 ↗</div>';
-  } else {
-    html += '<h3>연결 영상 ' + rel.filter(r => byId[r.id]?.type === 'video').length + '개</h3>';
-    const vids = rel.filter(r => byId[r.id]?.type === 'video').sort((a, b) => (byId[b.id].date || '').localeCompare(byId[a.id].date || ''));
-    for (const r of vids) { const rn = byId[r.id]; html += '<div class="item" onclick="jump(\'' + r.id + '\',' + (r.f ?? 0) + ')"><div class="t">' + esc(rn.label) + '</div><div class="m">' + rn.date + ' · 첫 언급 ' + (r.f != null ? fmt(r.f) : '-') + '</div></div>'; }
-  }
-  $side.innerHTML = html;
-}
-function jump(vid, t) { const n = byId['v:' + vid]; window.open('https://www.youtube.com/watch?v=' + vid + '&t=' + t + 's', '_blank'); }
-function typeLabel(t) { return { video: '영상', series: '시리즈', chart: '원국(칠판 판독)', '일간': '일간', '합충': '합충', '십성': '십성', '신살': '신살', '오행': '오행', '주제': '주제', '물상론': '물상론', '개념': '개념' }[t] || t; }
-function fmt(s) { s = Math.round(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+function fmt(s) { s = Math.round(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+const norm = s => (s || '').replace(/\s+/g, '');
 
-/* ---- 검색 ---- */
-const norm = s => s.replace(/\s+/g, '');
-$q.addEventListener('input', () => { clearTimeout(window._t); window._t = setTimeout(doSearch, 250); });
-document.getElementById('mode').addEventListener('change', doSearch);
-function doSearch() {
-  const q = norm($q.value), mode = document.getElementById('mode').value;
-  if (!q) { $side.innerHTML = '<div class="empty">검색어를 입력하세요</div>'; return; }
-  // 개념 그래프 검색
-  const cn = nodes.filter(n => n.type !== 'video' && norm(n.label).includes(q)).sort((a, b) => (b.count || 0) - (a.count || 0));
-  // 자막 전문 검색
-  const wantSeg = mode === 'seg' || (mode === 'auto' && cn.length === 0);
-  let html = '<h3>개념 ' + cn.length + '개</h3>';
-  for (const n of cn.slice(0, 12)) html += '<div class="item" onclick="showNode(\'' + n.id + '\')"><div class="t">' + esc(n.label) + '</div><div class="m">' + typeLabel(n.type) + ' · 언급 ' + n.count + '영상</div></div>';
-  if (wantSeg || q.length >= 2) {
-    const hits = []; const ql = q;
-    for (const s of segs) { const i = s.x.replace(/\s+/g, '').indexOf(ql); if (i >= 0) { hits.push(s); if (hits.length >= 80) break; } }
-    html += '<h3>자막 전문 ' + hits.length + '건</h3>';
-    for (const h of hits.slice(0, 60)) {
-      const i = h.x.replace(/\s+/g, '').indexOf(ql);
-      const raw = h.x, ri = raw.replace(/\s+/g, '').indexOf(ql);
-      const s2 = Math.max(0, ri - 18);
-      html += '<div class="seg" onclick="jump(\'' + h.v + '\',' + h.t + ')"><span class="tt">' + fmt(h.t) + '</span>' + esc2(raw, ql) + '<div style="color:var(--sub);font-size:11.5px;margin-top:2px">' + vidTitle(h.v) + ' ↗</div></div>';
-    }
-    if (!hits.length && !cn.length) html = '<div class="empty">검색 결과가 없습니다</div>';
+const CATS = [
+  { key: '일간', label: '일간', emoji: '🌞' },
+  { key: '합충', label: '합·충', emoji: '🔗' },
+  { key: '십성', label: '십성', emoji: '⭐' },
+  { key: '신살', label: '신살', emoji: '✨' },
+  { key: '오행', label: '오행', emoji: '🌿' },
+  { key: '물상론', label: '물상론', emoji: '📜' },
+  { key: '주제', label: '주제', emoji: '💬' },
+];
+
+function showCategories() {
+  let html = '<div class="cat-head">📂 카테고리별 탐색</div><div class="concept-grid">';
+  for (const c of CATS) {
+    const count = nodes.filter(n => n.type === c.key).length;
+    html += '<div class="concept-card" onclick="showCat(\'' + c.key + '\')">' + c.emoji + ' ' + c.label + ' <span class="cnt">' + count + '개</span></div>';
   }
-  $side.innerHTML = html;
-  $stat.textContent = $side.querySelectorAll('.item,.seg').length + '건';
+  html += '</div>';
+  const top = nodes.filter(n => !['video','chart','series'].includes(n.type) && (n.count || 0) >= 50).sort((a, b) => b.count - a.count).slice(0, 20);
+  html += '<div class="cat-head">🔥 자주 언급된 개념</div><div class="concept-grid">';
+  for (const n of top) html += '<div class="concept-card" onclick="showConcept(\'' + n.id + '\')">' + esc(n.label) + ' <span class="cnt">' + n.count + '영상</span></div>';
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
 }
-const VT = {}; nodes.forEach(n => { if (n.type === 'video') VT[n.id.slice(2)] = n.label; });
-function vidTitle(v) { return (VT[v] || v).slice(0, 30); }
-function esc2(raw, q) {
-  const flat = raw.replace(/\s+/g, ''); const i = flat.indexOf(q); if (i < 0) return esc(raw.slice(0, 60));
-  // 원문에서 대략 위치 매핑
-  let cnt = 0, start = 0, end = raw.length;
-  for (let j = 0; j < raw.length; j++) { if (raw[j] !== ' ' && raw[j] !== '\n') { if (cnt === i) { start = j; break; } cnt++; } }
-  return esc(raw.slice(Math.max(0, start - 20), start + q.length + 40));
+
+function showCat(key) {
+  const list = nodes.filter(n => n.type === key).sort((a, b) => (b.count || 0) - (a.count || 0));
+  const label = CATS.find(c => c.key === key)?.label || key;
+  let html = '<div class="back" onclick="showCategories()">← 돌아가기</div><div class="cat-head">' + label + ' (' + list.length + '개)</div><div class="concept-grid">';
+  for (const n of list) html += '<div class="concept-card" onclick="showConcept(\'' + n.id + '\')">' + esc(n.label) + ' <span class="cnt">' + (n.count || 0) + '영상</span></div>';
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
 }
-$stat.textContent = nodes.length + ' 노드 / ' + edges.length + ' 엣지 / ' + segs.length + ' 자막 세그먼트';
+
+function showConcept(id) {
+  const n = byId[id];
+  const vids = (cvIdx[id] || []).map(r => r.vid).sort((a, b) => (VT[b]?.views || 0) - (VT[a]?.views || 0));
+  let html = '<div class="back" onclick="showCategories()">← 돌아가기</div>';
+  html += '<div class="cat-head">' + esc(n.label) + ' — ' + vids.length + '개 영상</div>';
+  for (const vid of vids) {
+    const v = VT[vid]; if (!v) continue;
+    const b = boards ? boards[vid] : null;
+    html += '<div class="video-item"><div class="vt"><a href="https://www.youtube.com/watch?v=' + vid + '" target="_blank">' + esc(v.label) + '</a></div>';
+    html += '<div class="vi"><span>' + v.date + '</span><span>' + fmt(v.dur) + '</span><span>조회 ' + (v.views || 0).toLocaleString() + '</span></div>';
+    if (b) html += '<div class="board-tag' + (b.confidence === 'low' ? ' low' : '') + '">칠판: ' + (b.천간 || []).join('') + ' / ' + (b.지지 || []).join('') + '</div>';
+    html += '</div>';
+  }
+  document.getElementById('content').innerHTML = html;
+}
+
+document.getElementById('q').addEventListener('input', function () {
+  clearTimeout(window._st); const val = this.value.trim();
+  window._st = setTimeout(() => doSearch(val), 300);
+});
+
+function doSearch(q) {
+  if (!q) { showCategories(); return; }
+  const nq = norm(q);
+  const cHits = nodes.filter(n => !['video','chart','series'].includes(n.type) && norm(n.label).includes(nq)).sort((a, b) => (b.count || 0) - (a.count || 0));
+  const segHits = [];
+  for (const s of segs) { if (norm(s.x).includes(nq)) { segHits.push(s); if (segHits.length >= 100) break; } }
+  let html = '<div class="cat-head">검색: 개념 ' + cHits.length + '개 · 자막 ' + segHits.length + '건</div>';
+  if (cHits.length) {
+    html += '<div class="concept-grid">';
+    for (const n of cHits.slice(0, 12)) html += '<div class="concept-card" onclick="showConcept(\'' + n.id + '\')">' + esc(n.label) + ' <span class="cnt">' + (n.count || 0) + '영상</span></div>';
+    html += '</div>';
+  }
+  const byV = {};
+  for (const s of segHits) (byV[s.v] = byV[s.v] || []).push(s);
+  const sorted = Object.entries(byV).sort((a, b) => b[1].length - a[1].length);
+  for (const [vid, ss] of sorted.slice(0, 30)) {
+    const v = VT[vid]; if (!v) continue;
+    html += '<div class="video-item"><div class="vt"><a href="https://www.youtube.com/watch?v=' + vid + '" target="_blank">' + esc(v.label) + '</a></div>';
+    html += '<div class="vi"><span>' + v.date + '</span><span>조회 ' + (v.views || 0).toLocaleString() + '</span></div>';
+    html += '<div class="ts">';
+    for (const s of ss.slice(0, 6)) html += '<a href="https://www.youtube.com/watch?v=' + vid + '&t=' + s.t + 's" target="_blank">' + fmt(s.t) + '</a>';
+    if (ss.length > 6) html += '<span style="font-size:11px;color:var(--sub)">+' + (ss.length - 6) + '</span>';
+    html += '</div></div>';
+  }
+  if (!cHits.length && !segHits.length) html = '<div class="empty">검색 결과가 없습니다</div>';
+  document.getElementById('content').innerHTML = html;
+}
+showCategories();
 </script>
 </body>
 </html>

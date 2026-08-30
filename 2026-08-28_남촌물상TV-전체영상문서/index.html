@@ -25,6 +25,16 @@ table.meta th{width:110px;color:var(--sub);font-weight:600;background:#f6f5f1}
 .tr .row:hover{background:#f7f5ef}
 .tr .t{flex:0 0 64px;color:var(--accent);font-variant-numeric:tabular-nums;font-size:13px;padding-top:2px}
 .notice{background:#fdf6e3;border:1px solid #ecd9a0;border-radius:8px;padding:10px 14px;font-size:13px;color:#6b5b1e;margin:18px 0}
+.board{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:14px}
+.board .chart{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin:8px 0}
+.board .pillars{display:flex;gap:14px}
+.board .pcol{text-align:center}
+.board .pcol .lbl{font-size:11.5px;color:var(--sub)}
+.board .pcol .val{font-size:22px;font-weight:700;font-family:'Times New Roman',serif}
+.board .gu{font-size:13px;color:var(--accent);font-weight:700}
+.board img{max-width:420px;width:100%;border-radius:6px;border:1px solid var(--line);display:block}
+.board .fnote{font-size:12.5px;color:var(--sub);margin-top:6px}
+.board .conf-h{color:#3c6329;font-weight:700}.board .conf-m{color:#8a6d1a;font-weight:700}.board .conf-l{color:#a05a2c;font-weight:700}
 .nav{display:flex;justify-content:space-between;gap:12px;margin-top:34px;font-size:14px}
 .nav a{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 14px;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .thumb{width:100%;max-width:480px;border-radius:8px;border:1px solid var(--line);display:block;margin:4px 0 6px}
@@ -65,7 +75,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--sub);border-top:1px solid va
 <div class="wrap">
 <div class="hero">
 <h1>남촌물상TV 채널 전체 영상 문서 아카이브</h1>
-<div class="sub">김대영 교수(국민대학교 동양철학) 사주·물상론 채널 · 유튜브 채널 <a href="https://www.youtube.com/channel/UCYDMmKpZc5tn25ZEJsDDz5w" target="_blank" rel="noopener">UCYDMmKpZc5tn25ZEJsDDz5w</a> (@NAMCHON-TV) · 수집 2026-08-28 23:43 (KST)</div>
+<div class="sub">김대영 교수(국민대학교 동양철학) 사주·물상론 채널 · 유튜브 채널 <a href="https://www.youtube.com/channel/UCYDMmKpZc5tn25ZEJsDDz5w" target="_blank" rel="noopener">UCYDMmKpZc5tn25ZEJsDDz5w</a> (@NAMCHON-TV) · 수집 2026-08-30 17:03 (KST)</div>
 <div class="stats"><div class="stat"><div class="k">동영상</div><div class="v">205편</div></div><div class="stat"><div class="k">Shorts</div><div class="v">196편</div></div><div class="stat"><div class="k">총 영상 길이(동영상)</div><div class="v">69시간 54분</div></div><div class="stat"><div class="k">자막 수집</div><div class="v">400 / 401편 (1,604,237자)</div></div><div class="stat"><div class="k">최초 게시</div><div class="v">2023-07-31</div></div><div class="stat"><div class="k">최근 게시</div><div class="v">2026-08-26</div></div></div>
 <details style="margin-top:14px"><summary style="cursor:pointer;font-size:13.5px;color:var(--sub)">채널 소개 원문 보기</summary><div class="chan">⛳️.  남촌.  김대영 교수 프로필.
                - 원광대학교 동양대학원 철학과 졸업
@@ -97,14 +107,14 @@ footer{margin-top:36px;font-size:12.5px;color:var(--sub);border-top:1px solid va
 <span class="count" id="cnt"></span>
 </div>
 
-<div class="notice">이 아카이브는 채널의 공개 영상 401편 전부를 문서화한 것입니다. 각 영상 문서에는 메타데이터, 설명 원문, YouTube 한국어 자동생성 자막 전문(타임스탬프)이 들어 있습니다. 자막은 자동음성인식 원문 그대로 보존했으므로 표기 오류가 남아 있을 수 있고, 영상 화면의 도표 등 시각 자료는 포함되지 않습니다.</div>
+<div class="notice">이 아카이브는 채널의 공개 영상 401편 전부를 문서화한 것입니다. 각 영상 문서에는 메타데이터, 설명 원문, YouTube 한국어 자동생성 자막 전문(타임스탬프)이 들어 있습니다. 전체 영상에 화면 프레임 판독을 실행해 칠판에 판서된 원국을 문서에 담았으며, 판서가 없는 영상(정적 썸네일 오디오 강의 등)은 칠판 열에 표시되지 않습니다. 자막은 자동음성인식 원문 그대로 보존했으므로 표기 오류가 남아 있을 수 있고, 판독 한자는 AI 시각 인식 결과이니 신뢰도 표기를 확인하세요.</div>
 
 <table class="list" id="tbl">
-<thead><tr><th>번호</th><th>제목</th><th>게시일</th><th>길이</th><th>조회수</th><th>자막</th><th>원본</th></tr></thead>
+<thead><tr><th>번호</th><th>제목</th><th>게시일</th><th>길이</th><th>조회수</th><th>자막</th><th>칠판</th><th>원본</th></tr></thead>
 <tbody id="rows"></tbody>
 </table>
 
-<footer>남촌물상TV(김대영 교수) 채널 문서화 아카이브 · 문서 수 401페이지 · 원본 영상과 모든 권리는 채널 운영자에 있습니다 · 생성: 2026-08-28 23:43 (KST)</footer>
+<footer>남촌물상TV(김대영 교수) 채널 문서화 아카이브 · 문서 수 401페이지 · 원본 영상과 모든 권리는 채널 운영자에 있습니다 · 생성: 2026-08-30 17:03 (KST)</footer>
 </div>
 <script src="data/videos.js"></script>
 <script src="data/transcripts.js"></script>
@@ -142,6 +152,7 @@ function render() {
     var noStr = v.kind === 'shorts' ? 'S' + String(v.no).padStart(4, '0') : 'V' + String(v.no).padStart(4, '0');
     var pill = v.kind === 'shorts' ? '<span class="pill s">쇼츠</span>' : '<span class="pill v">동영상</span>';
     var trCell = v.tr > 0 ? v.tr.toLocaleString() + '구간' : '<span style="color:#b3543f">없음</span>';
+    var bdCell = v.bd > 0 ? '<span style="color:#3c6329;font-weight:600">' + v.bd + '장</span>' : '<span style="color:#999">-</span>';
     html += '<tr><td class="no">' + noStr + '</td>' +
       '<td class="ttl"><a href="videos/' + v.file + '">' + esc2(v.title) + '</a>' + pill +
       (rows[j].snip ? '<span class="snip">…' + esc2(rows[j].snip) + '…</span>' : '') + '</td>' +
@@ -149,9 +160,10 @@ function render() {
       '<td class="dur">' + dur2(v.dur) + '</td>' +
       '<td>' + v.views.toLocaleString() + '</td>' +
       '<td>' + trCell + '</td>' +
+      '<td>' + bdCell + '</td>' +
       '<td class="yt"><a href="https://www.youtube.com/watch?v=' + v.videoId + '" target="_blank" rel="noopener">YouTube↗</a></td></tr>';
   }
-  $('rows').innerHTML = html || '<tr><td colspan="7" style="color:#999;padding:20px">검색 결과가 없습니다.</td></tr>';
+  $('rows').innerHTML = html || '<tr><td colspan="8" style="color:#999;padding:20px">검색 결과가 없습니다.</td></tr>';
   $('cnt').textContent = rows.length + ' / ' + CATALOG.length + '편';
 }
 function esc2(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }

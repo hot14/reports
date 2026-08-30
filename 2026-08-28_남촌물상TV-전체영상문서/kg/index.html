@@ -24,13 +24,10 @@ input#q{width:100%;padding:12px 16px;border:2px solid var(--line);border-radius:
 .video-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:10px}
 .video-item .vt{font-size:14.5px;font-weight:700;margin-bottom:6px}
 .video-item .vt a{color:var(--ink);text-decoration:none}
-.video-item .vt a:hover{color:var(--acc)}
 .video-item .vi{font-size:12.5px;color:var(--sub);display:flex;gap:14px;flex-wrap:wrap}
 .video-item .ts{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
 .video-item .ts a{background:var(--chip);color:#5d5122;border-radius:4px;padding:2px 8px;font-size:12px;text-decoration:none;font-variant-numeric:tabular-nums}
-.video-item .ts a:hover{background:#e8dcbe}
 .board-tag{display:inline-block;background:#e8f5e9;color:#2e7d32;border-radius:4px;padding:1px 7px;font-size:11.5px;margin-top:6px}
-.board-tag.low{background:#fbe9e7;color:#c62828}
 .empty{color:var(--sub);text-align:center;padding:40px;font-size:14px}
 .back{cursor:pointer;color:var(--acc);font-size:13.5px;margin-bottom:14px}
 </style>
@@ -41,114 +38,90 @@ input#q{width:100%;padding:12px 16px;border:2px solid var(--line);border-radius:
 <div class="sub">401편 강의·상담 자막 + 칠판 원국 판독 통합 검색 · <a href="../index.html">← 문서 아카이브</a></div>
 </header>
 <main>
-<div class="guide">
-<b>사용법 3단계</b><br>
-<b>①</b> 아래에서 카테고리를 고르거나 검색창에 찾고 싶은 말(갑기합, 을목 일간, 재물 등)을 입력<br>
-<b>②</b> 관련 영상 목록이 나옴<br>
-<b>③</b> 타임스탬프 클릭 → 유튜브 해당 장면으로 바로 이동<br>
-💡 <b>칠판</b> 버튼이 있는 영상은 교수님이 칠판에 쓴 사주 원국 판독 결과도 함께 표시됩니다.
-</div>
-<input id="q" placeholder="검색: 갑기합, 을목 일간, 재물, 결혼, 도화 ...">
+<div class="guide"><b>사용법 3단계</b><br><b>①</b> 카테고리를 고르거나 검색어 입력<br><b>②</b> 관련 영상 목록 표시<br><b>③</b> 타임스탬프 클릭 → 유튜브 해당 장면 이동<br>💡 칠판 버튼이 있는 영상은 사주 원국 판독 결과도 표시</div>
+<input id="q" placeholder="검색: 갑기합, 을목 일간, 재물, 결혼...">
 <div id="content"></div>
 </main>
 <script src="kg.json"></script>
 <script src="boards_data.json"></script>
 <script src="segments.json"></script>
 <script>
-const nodes = KG.nodes, edges = KG.edges, segs = SEG, boards = BOARDS;
-const byId = {}; nodes.forEach(n => byId[n.id] = n);
-const VT = {}; nodes.forEach(n => { if (n.type === 'video') VT[n.id.slice(2)] = n; });
-const cvIdx = {}; edges.forEach(e => {
-  const cs = e.s.startsWith('v:') ? e.t : e.s;
-  const vs = e.s.startsWith('v:') ? e.s : e.t;
-  if (byId[vs]?.type !== 'video') return;
-  const cn = byId[cs]; if (!cn || ['video','series','chart'].includes(cn.type)) return;
-  (cvIdx[cs] = cvIdx[cs] || []).push({ vid: vs });
+"use strict";
+var nodes=KG.nodes, edges=KG.edges, segs=SEG, boards=BOARDS;
+var VT={}; nodes.forEach(function(n){if(n.type==="video")VT[n.id.slice(2)]=n;});
+var cvIdx={}; edges.forEach(function(e){
+  var vs=e.s.startsWith("v:")?e.s:e.t;
+  var cs=e.s.startsWith("v:")?e.t:e.s;
+  if(!VT[vs])return;
+  var cn=null; for(var i=0;i<nodes.length;i++){if(nodes[i].id===cs){cn=nodes[i];break;}}
+  if(!cn||["video","series","chart"].indexOf(cn.type)>=0)return;
+  (cvIdx[cs]=cvIdx[cs]||[]).push(vs);
 });
-function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
-function fmt(s) { s = Math.round(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
-const norm = s => (s || '').replace(/\s+/g, '');
-
-const CATS = [
-  { key: '일간', label: '일간', emoji: '🌞' },
-  { key: '합충', label: '합·충', emoji: '🔗' },
-  { key: '십성', label: '십성', emoji: '⭐' },
-  { key: '신살', label: '신살', emoji: '✨' },
-  { key: '오행', label: '오행', emoji: '🌿' },
-  { key: '물상론', label: '물상론', emoji: '📜' },
-  { key: '주제', label: '주제', emoji: '💬' },
-];
-
-function showCategories() {
-  let html = '<div class="cat-head">📂 카테고리별 탐색</div><div class="concept-grid">';
-  for (const c of CATS) {
-    const count = nodes.filter(n => n.type === c.key).length;
-    html += '<div class="concept-card" onclick="showCat(\'' + c.key + '\')">' + c.emoji + ' ' + c.label + ' <span class="cnt">' + count + '개</span></div>';
-  }
-  html += '</div>';
-  const top = nodes.filter(n => !['video','chart','series'].includes(n.type) && (n.count || 0) >= 50).sort((a, b) => b.count - a.count).slice(0, 20);
-  html += '<div class="cat-head">🔥 자주 언급된 개념</div><div class="concept-grid">';
-  for (const n of top) html += '<div class="concept-card" onclick="showConcept(\'' + n.id + '\')">' + esc(n.label) + ' <span class="cnt">' + n.count + '영상</span></div>';
-  html += '</div>';
-  document.getElementById('content').innerHTML = html;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function fmt(s){s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");}
+function norm(s){return(s||"").replace(/\s+/g,"");}
+var CATS=[{key:"일간",label:"일간",emoji:"🌞"},{key:"합충",label:"합·충",emoji:"🔗"},{key:"십성",label:"십성",emoji:"⭐"},{key:"신살",label:"신살",emoji:"✨"},{key:"오행",label:"오행",emoji:"🌿"},{key:"물상론",label:"물상론",emoji:"📜"},{key:"주제",label:"주제",emoji:"💬"}];
+function showCategories(){
+  var html='<div class="cat-head">📂 카테고리별 탐색</div><div class="concept-grid">';
+  CATS.forEach(function(c){
+    var count=nodes.filter(function(n){return n.type===c.key;}).length;
+    html+='<div class="concept-card" onclick="showCat(\''+c.key+'\')">'+c.emoji+' '+c.label+' <span class="cnt">'+count+'개</span></div>';
+  });
+  html+='</div>';
+  var top=nodes.filter(function(n){return["video","chart","series"].indexOf(n.type)<0&&(n.count||0)>=50;}).sort(function(a,b){return(b.count||0)-(a.count||0);}).slice(0,20);
+  html+='<div class="cat-head">🔥 자주 언급된 개념</div><div class="concept-grid">';
+  top.forEach(function(n){html+='<div class="concept-card" onclick="showConcept(\''+n.id+'\')">'+esc(n.label)+' <span class="cnt">'+n.count+'영상</span></div>';});
+  html+='</div>';
+  document.getElementById("content").innerHTML=html;
 }
-
-function showCat(key) {
-  const list = nodes.filter(n => n.type === key).sort((a, b) => (b.count || 0) - (a.count || 0));
-  const label = CATS.find(c => c.key === key)?.label || key;
-  let html = '<div class="back" onclick="showCategories()">← 돌아가기</div><div class="cat-head">' + label + ' (' + list.length + '개)</div><div class="concept-grid">';
-  for (const n of list) html += '<div class="concept-card" onclick="showConcept(\'' + n.id + '\')">' + esc(n.label) + ' <span class="cnt">' + (n.count || 0) + '영상</span></div>';
-  html += '</div>';
-  document.getElementById('content').innerHTML = html;
+function showCat(key){
+  var label=""; CATS.forEach(function(c){if(c.key===key)label=c.label;});
+  var list=nodes.filter(function(n){return n.type===key;}).sort(function(a,b){return(b.count||0)-(a.count||0);});
+  var html='<div class="back" onclick="showCategories()">← 돌아가기</div><div class="cat-head">'+label+' ('+list.length+'개)</div><div class="concept-grid">';
+  list.forEach(function(n){html+='<div class="concept-card" onclick="showConcept(\''+n.id+'\')">'+esc(n.label)+' <span class="cnt">'+(n.count||0)+'영상</span></div>';});
+  html+='</div>';
+  document.getElementById("content").innerHTML=html;
 }
-
-function showConcept(id) {
-  const n = byId[id];
-  const vids = (cvIdx[id] || []).map(r => r.vid).sort((a, b) => (VT[b]?.views || 0) - (VT[a]?.views || 0));
-  let html = '<div class="back" onclick="showCategories()">← 돌아가기</div>';
-  html += '<div class="cat-head">' + esc(n.label) + ' — ' + vids.length + '개 영상</div>';
-  for (const vid of vids) {
-    const v = VT[vid]; if (!v) continue;
-    const b = boards ? boards[vid] : null;
-    html += '<div class="video-item"><div class="vt"><a href="https://www.youtube.com/watch?v=' + vid + '" target="_blank">' + esc(v.label) + '</a></div>';
-    html += '<div class="vi"><span>' + v.date + '</span><span>' + fmt(v.dur) + '</span><span>조회 ' + (v.views || 0).toLocaleString() + '</span></div>';
-    if (b) html += '<div class="board-tag' + (b.confidence === 'low' ? ' low' : '') + '">칠판: ' + (b.천간 || []).join('') + ' / ' + (b.지지 || []).join('') + '</div>';
-    html += '</div>';
-  }
-  document.getElementById('content').innerHTML = html;
+function showConcept(id){
+  var n=null; nodes.forEach(function(x){if(x.id===id)n=x;});
+  if(!n)return;
+  var vids=(cvIdx[id]||[]).map(function(r){return r;}).sort(function(a,b){return(VT[b]?.views||0)-(VT[a]?.views||0);});
+  var html='<div class="back" onclick="showCategories()">← 돌아가기</div>';
+  html+='<div class="cat-head">'+esc(n.label)+' — '+vids.length+'개 영상</div>';
+  vids.forEach(function(vid){
+    var v=VT[vid];if(!v)return;
+    var b=boards?boards[vid]:null;
+    html+='<div class="video-item"><div class="vt"><a href="https://www.youtube.com/watch?v='+vid+'" target="_blank">'+esc(v.label)+'</a></div>';
+    html+='<div class="vi"><span>'+v.date+'</span><span>조회 '+(v.views||0).toLocaleString()+'</span></div>';
+    if(b)html+='<div class="board-tag">'+(b["천간"]||[]).join("")+' / '+(b["지지"]||[]).join("")+'</div>';
+    html+='</div>';
+  });
+  document.getElementById("content").innerHTML=html;
 }
-
-document.getElementById('q').addEventListener('input', function () {
-  clearTimeout(window._st); const val = this.value.trim();
-  window._st = setTimeout(() => doSearch(val), 300);
+document.getElementById("q").addEventListener("input",function(){
+  clearTimeout(window._st);var val=this.value.trim();
+  window._st=setTimeout(function(){doSearch(val);},300);
 });
-
-function doSearch(q) {
-  if (!q) { showCategories(); return; }
-  const nq = norm(q);
-  const cHits = nodes.filter(n => !['video','chart','series'].includes(n.type) && norm(n.label).includes(nq)).sort((a, b) => (b.count || 0) - (a.count || 0));
-  const segHits = [];
-  for (const s of segs) { if (norm(s.x).includes(nq)) { segHits.push(s); if (segHits.length >= 100) break; } }
-  let html = '<div class="cat-head">검색: 개념 ' + cHits.length + '개 · 자막 ' + segHits.length + '건</div>';
-  if (cHits.length) {
-    html += '<div class="concept-grid">';
-    for (const n of cHits.slice(0, 12)) html += '<div class="concept-card" onclick="showConcept(\'' + n.id + '\')">' + esc(n.label) + ' <span class="cnt">' + (n.count || 0) + '영상</span></div>';
-    html += '</div>';
-  }
-  const byV = {};
-  for (const s of segHits) (byV[s.v] = byV[s.v] || []).push(s);
-  const sorted = Object.entries(byV).sort((a, b) => b[1].length - a[1].length);
-  for (const [vid, ss] of sorted.slice(0, 30)) {
-    const v = VT[vid]; if (!v) continue;
-    html += '<div class="video-item"><div class="vt"><a href="https://www.youtube.com/watch?v=' + vid + '" target="_blank">' + esc(v.label) + '</a></div>';
-    html += '<div class="vi"><span>' + v.date + '</span><span>조회 ' + (v.views || 0).toLocaleString() + '</span></div>';
-    html += '<div class="ts">';
-    for (const s of ss.slice(0, 6)) html += '<a href="https://www.youtube.com/watch?v=' + vid + '&t=' + s.t + 's" target="_blank">' + fmt(s.t) + '</a>';
-    if (ss.length > 6) html += '<span style="font-size:11px;color:var(--sub)">+' + (ss.length - 6) + '</span>';
-    html += '</div></div>';
-  }
-  if (!cHits.length && !segHits.length) html = '<div class="empty">검색 결과가 없습니다</div>';
-  document.getElementById('content').innerHTML = html;
+function doSearch(q){
+  if(!q){showCategories();return;}
+  var nq=norm(q);
+  var cHits=nodes.filter(function(n){return["video","chart","series"].indexOf(n.type)<0&&norm(n.label).indexOf(nq)>=0;}).sort(function(a,b){return(b.count||0)-(a.count||0);});
+  var segHits=[];
+  for(var i=0;i<segs.length;i++){if(norm(segs[i].x).indexOf(nq)>=0){segHits.push(segs[i]);if(segHits.length>=100)break;}}
+  var html='<div class="cat-head">검색: 개념 '+cHits.length+'개 · 자막 '+segHits.length+'건</div>';
+  if(cHits.length){html+='<div class="concept-grid>';cHits.slice(0,12).forEach(function(n){html+='<div class="concept-card" onclick="showConcept(\''+n.id+'\')">'+esc(n.label)+' <span class="cnt">'+(n.count||0)+'영상</span></div>';});html+='</div>';}
+  var byV={};segHits.forEach(function(s){(byV[s.v]=byV[s.v]||[]).push(s);});
+  var sorted=Object.keys(byV).sort(function(a,b){return byV[b].length-byV[a].length;}).slice(0,30);
+  sorted.forEach(function(vid){
+    var v=VT[vid];if(!v)return;
+    html+='<div class="video-item"><div class="vt"><a href="https://www.youtube.com/watch?v='+vid+'" target="_blank">'+esc(v.label)+'</a></div>';
+    html+='<div class="vi"><span>'+v.date+'</span><span>조회 '+(v.views||0).toLocaleString()+'</span></div>';
+    html+='<div class="ts">';byV[vid].slice(0,6).forEach(function(s){html+='<a href="https://www.youtube.com/watch?v='+vid+'&t='+s.t+'s" target="_blank">'+fmt(s.t)+'</a>';});
+    if(byV[vid].length>6)html+='<span style="font-size:11px;color:var(--sub)">+'+(byV[vid].length-6)+'</span>';
+    html+='</div></div>';
+  });
+  if(!cHits.length&&!segHits.length)html='<div class="empty">검색 결과 없음</div>';
+  document.getElementById("content").innerHTML=html;
 }
 showCategories();
 </script>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKR은 어디에서 망가지는가 — 실무에서 가장 흔히 저지르는 10가지 실수와 교정 사례</title>
+<meta name="description" content="존 도어 『Measure What Matters』 RESOURCE 1 'Google's OKR Playbook'을 기반으로, 실무 OKR의 10가지 전형적 실수와 Before→After 교정 사례, 10문항 자가진단을 정리한 리포트.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;900&family=JetBrains+Mono:wght@600;700&display=swap">
+<style>
+/* Hallmark · pre-emit critique: P5 H4 E4 S4 R4 V4 */
+/* Hallmark · macrostructure: Long Document · tone: editorial (almanac-warm) · anchor hue: 165
+ * theme: Almanac · accent: emerald ~4% · paper: warm oklch(97% .008 95)
+ * type: Noto Serif KR + Pretendard + JetBrains Mono (label/numeral register)
+ * nav: none · footer: colophon · motion: hover-lift only
+ * honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass (34, 49, 50–57)
+ * contrast: pass (40–41) · nav-footer: pass (42–45)
+ */
+:root{
+  --color-paper:oklch(97.2% .008 95);
+  --color-paper-2:oklch(94.8% .011 95);
+  --color-paper-3:oklch(91.8% .014 95);
+  --color-ink:oklch(25% .014 250);
+  --color-ink-2:oklch(40% .016 250);
+  --color-muted:oklch(52% .015 250);
+  --color-accent:oklch(52% .115 165);
+  --color-accent-strong:oklch(43% .105 165);
+  --color-accent-ink:oklch(98.5% .008 165);
+  --color-warn:oklch(45% .15 30);
+  --color-warn-bg:oklch(94% .028 30);
+  --color-focus:oklch(50% .15 260);
+  --color-rule:oklch(87.5% .012 95);
+  --font-display:"Noto Serif KR",serif;
+  --font-body:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-outlier:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;
+  --space-3xs:4px;--space-2xs:8px;--space-xs:12px;--space-sm:16px;--space-md:24px;
+  --space-lg:32px;--space-xl:48px;--space-2xl:72px;--space-3xl:104px;
+  --text-xs:.75rem;--text-sm:.875rem;--text-base:1rem;--text-lg:1.125rem;
+  --text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.125rem;
+  --text-display:clamp(2.1rem,4.6vw,3.2rem);
+  --ease-out:cubic-bezier(.22,.61,.36,1);
+  --dur-fast:120ms;--dur:200ms;
+  --radius-sm:6px;--radius-md:10px;--radius-pill:999px;
+  --rule-hair:1px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);font-size:var(--text-base);line-height:1.7;
+  background:var(--color-paper);color:var(--color-ink);
+}
+a{color:var(--color-accent-strong)}
+a:hover{color:var(--color-ink)}
+a:focus-visible,button:focus-visible,label:focus-within,input:focus-visible{
+  outline:2px solid var(--color-focus);outline-offset:2px;border-radius:var(--radius-sm);
+}
+:is(a,button,label):active{opacity:.75}
+:is(a,button):disabled{opacity:.55;cursor:not-allowed}
+.wrap{max-width:1060px;margin-inline:auto;padding-inline:var(--space-md)}
+
+/* ---------- header ---------- */
+.mast{padding-block:var(--space-xl) var(--space-2xl)}
+.mast .kick{
+  font-family:var(--font-outlier);font-size:var(--text-xs);font-weight:700;
+  letter-spacing:.08em;color:var(--color-accent-strong);text-transform:uppercase;
+  display:inline-block;border:var(--rule-hair) solid var(--color-rule);
+  border-radius:var(--radius-pill);padding:var(--space-3xs) var(--space-xs);
+}
+.mast h1{
+  font-family:var(--font-display);font-weight:900;font-size:var(--text-display);
+  line-height:1.12;letter-spacing:-.01em;margin-block:var(--space-sm) var(--space-sm);
+  overflow-wrap:anywhere;min-width:0;max-width:22ch;
+}
+.mast .sub{
+  font-size:var(--text-lg);font-weight:600;color:var(--color-ink-2);
+  max-width:56ch;margin-bottom:var(--space-xs);overflow-wrap:anywhere;
+}
+.mast .src{font-size:var(--text-sm);color:var(--color-muted);max-width:70ch}
+.mast .src b{color:var(--color-ink-2)}
+.statrow{
+  display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm) var(--space-lg);
+  margin-top:var(--space-lg);padding-top:var(--space-sm);
+  border-top:var(--rule-hair) solid var(--color-rule);
+}
+.stat{display:flex;align-items:baseline;gap:var(--space-2xs)}
+.stat .n{font-family:var(--font-outlier);font-weight:700;font-size:var(--text-xl);color:var(--color-ink)}
+.stat .l{font-size:var(--text-sm);color:var(--color-muted);font-weight:600}
+.jump{display:flex;flex-wrap:wrap;gap:var(--space-2xs);margin-top:var(--space-md)}
+.jump a{
+  font-size:var(--text-sm);font-weight:700;text-decoration:none;
+  border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-pill);
+  padding:var(--space-2xs) var(--space-sm);background:var(--color-paper-2);
+  color:var(--color-ink-2);white-space:nowrap;
+  transition:border-color var(--dur) var(--ease-out),background var(--dur) var(--ease-out);
+}
+.jump a:hover{border-color:var(--color-accent);background:var(--color-paper-3);color:var(--color-accent-strong)}
+
+/* ---------- sections ---------- */
+section{padding-block:var(--space-2xl);border-top:var(--rule-hair) solid var(--color-rule)}
+.shead .no{
+  font-family:var(--font-outlier);font-size:var(--text-sm);font-weight:700;
+  color:var(--color-accent-strong);letter-spacing:.1em;
+}
+.shead h2{
+  font-family:var(--font-display);font-weight:700;font-size:var(--text-3xl);
+  line-height:1.25;margin-top:var(--space-3xs);overflow-wrap:anywhere;min-width:0;
+}
+.shead .lede{max-width:68ch;color:var(--color-ink-2);margin-top:var(--space-xs)}
+
+/* 5 principles */
+.prin{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:var(--space-sm);margin-top:var(--space-lg)}
+.prin div{background:var(--color-paper-2);border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-md);padding:var(--space-sm) var(--space-md)}
+.prin dt{font-weight:800;font-size:var(--text-sm)}
+.prin dd{font-size:var(--text-sm);color:var(--color-ink-2);margin-top:var(--space-3xs)}
+.flow{
+  margin-top:var(--space-lg);border:var(--rule-hair) solid var(--color-rule);
+  border-radius:var(--radius-md);background:var(--color-paper-2);
+  padding:var(--space-md);display:grid;gap:var(--space-sm);
+}
+.flow .step{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-2xs) var(--space-sm)}
+.flow .k{
+  font-family:var(--font-outlier);font-weight:700;font-size:var(--text-xs);
+  color:var(--color-accent-strong);letter-spacing:.06em;white-space:nowrap;
+}
+.flow .v{font-size:var(--text-sm);color:var(--color-ink-2)}
+.scale{
+  display:flex;flex-wrap:wrap;gap:var(--space-2xs);margin-top:var(--space-sm);
+  font-family:var(--font-outlier);font-size:var(--text-xs);font-weight:700;
+}
+.scale span{border-radius:var(--radius-sm);padding:var(--space-3xs) var(--space-2xs)}
+.scale .r{background:var(--color-warn-bg);color:var(--color-warn)}
+.scale .y{background:oklch(94% .045 85);color:oklch(46% .1 70)}
+.scale .g{background:oklch(92% .05 165);color:var(--color-accent-strong)}
+
+/* mistakes */
+.miss{
+  margin-top:var(--space-xl);background:var(--color-paper-2);
+  border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-md);
+  padding:var(--space-md);
+  transition:transform var(--dur) var(--ease-out),border-color var(--dur) var(--ease-out);
+}
+.miss:hover{transform:translateY(-2px);border-color:oklch(80% .04 165)}
+.miss .mno{
+  font-family:var(--font-outlier);font-size:var(--text-sm);font-weight:700;
+  color:var(--color-accent-strong);letter-spacing:.1em;
+}
+.miss h3{
+  font-family:var(--font-display);font-weight:700;font-size:var(--text-xl);
+  line-height:1.35;margin-top:var(--space-3xs);overflow-wrap:anywhere;min-width:0;
+}
+.miss dl{margin-top:var(--space-sm);display:grid;gap:var(--space-2xs)}
+.miss dl>div{display:flex;flex-wrap:wrap;gap:var(--space-2xs) var(--space-sm);align-items:baseline}
+.miss dt{
+  font-family:var(--font-outlier);font-size:var(--text-xs);font-weight:700;
+  color:var(--color-muted);letter-spacing:.06em;flex:0 0 5.5em;white-space:nowrap;
+}
+.miss dd{flex:1 1 24rem;min-width:0;font-size:var(--text-sm);color:var(--color-ink-2)}
+.miss dd b{color:var(--color-ink)}
+.ba{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-sm);margin-top:var(--space-sm)}
+.ba .cell{
+  border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-sm);
+  background:var(--color-paper);padding:var(--space-sm);
+}
+.ba .cell.bad{background:var(--color-warn-bg);border-color:oklch(87% .05 30)}
+.ba .tag{
+  font-family:var(--font-outlier);font-size:var(--text-xs);font-weight:700;
+  letter-spacing:.08em;border-radius:var(--radius-sm);
+  padding:2px var(--space-2xs);display:inline-block;margin-bottom:var(--space-2xs);
+}
+.ba .bad .tag{background:oklch(88% .05 30);color:var(--color-warn)}
+.ba .good .tag{background:oklch(90% .055 165);color:var(--color-accent-strong)}
+.ba p{font-size:var(--text-sm);line-height:1.65;overflow-wrap:anywhere}
+.ba .cell.good p b{color:var(--color-accent-strong)}
+table.cmp{
+  width:100%;border-collapse:collapse;margin-top:var(--space-sm);
+  font-size:var(--text-sm);min-width:560px;
+}
+.table-scroll{overflow-x:auto;margin-top:var(--space-sm)}
+table.cmp th{
+  text-align:left;font-family:var(--font-outlier);font-size:var(--text-xs);
+  font-weight:700;color:var(--color-muted);letter-spacing:.06em;
+  border-bottom:2px solid var(--color-rule);padding:var(--space-2xs) var(--space-2xs);
+}
+table.cmp td{border-bottom:var(--rule-hair) solid var(--color-rule);padding:var(--space-2xs) var(--space-2xs);vertical-align:top;min-width:0}
+table.cmp td b{color:var(--color-accent-strong)}
+.litmus{
+  margin-top:var(--space-sm);border-top:2px solid var(--color-accent);
+  background:var(--color-paper);border-radius:0 var(--radius-sm) var(--radius-sm) var(--radius-sm);
+  padding:var(--space-xs) var(--space-sm);
+}
+.litmus .lt{
+  font-family:var(--font-outlier);font-size:var(--text-xs);font-weight:700;
+  color:var(--color-accent-strong);letter-spacing:.08em;
+}
+.litmus p{font-size:var(--text-sm);color:var(--color-ink-2);margin-top:var(--space-3xs)}
+
+/* diagnosis */
+.dx{margin-top:var(--space-lg)}
+.dx ol{list-style:none;display:grid;gap:var(--space-2xs)}
+.dx li{
+  display:flex;align-items:center;gap:var(--space-sm);
+  background:var(--color-paper-2);border:var(--rule-hair) solid var(--color-rule);
+  border-radius:var(--radius-sm);padding:var(--space-2xs) var(--space-sm);
+}
+.dx li:has(input:checked){background:var(--color-warn-bg);border-color:oklch(85% .06 30)}
+.dx input{
+  appearance:none;width:18px;height:18px;flex:0 0 18px;
+  border:1px solid oklch(75% .03 30);border-radius:4px;background:var(--color-paper);
+  display:grid;place-items:center;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);
+}
+.dx input:checked{background:var(--color-warn);border-color:var(--color-warn)}
+.dx input:checked::after{content:"✕";color:var(--color-accent-ink);font-size:11px;font-weight:700;line-height:1}
+.dx label{flex:1;min-width:0;font-size:var(--text-sm);cursor:pointer}
+.dx label b{font-family:var(--font-outlier);font-size:var(--text-xs);color:var(--color-muted);margin-right:var(--space-2xs)}
+.dxbox{
+  margin-top:var(--space-md);border:var(--rule-hair) solid var(--color-rule);
+  border-radius:var(--radius-md);background:var(--color-paper);
+  padding:var(--space-md);display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm);
+}
+.dxbox .score{font-family:var(--font-outlier);font-weight:700;font-size:var(--text-2xl);color:var(--color-warn)}
+.dxbox .of{font-family:var(--font-outlier);font-size:var(--text-sm);color:var(--color-muted)}
+.dxbox .verdict{flex:1 1 20rem;min-width:0;font-size:var(--text-sm);color:var(--color-ink-2)}
+.dxbox .verdict a{white-space:nowrap}
+#reset{
+  font-family:var(--font-body);font-size:var(--text-sm);font-weight:700;
+  border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-pill);
+  background:var(--color-paper-2);color:var(--color-ink-2);cursor:pointer;
+  padding:var(--space-2xs) var(--space-sm);white-space:nowrap;
+  transition:border-color var(--dur) var(--ease-out),background var(--dur) var(--ease-out);
+}
+#reset:hover{border-color:var(--color-accent);color:var(--color-accent-strong);background:var(--color-paper-3)}
+
+/* final checklist */
+.final ol{list-style:none;counter-reset:fc;margin-top:var(--space-lg);display:grid;gap:var(--space-2xs)}
+.final li{
+  counter-increment:fc;display:flex;gap:var(--space-sm);align-items:baseline;
+  border-bottom:var(--rule-hair) solid var(--color-rule);padding-block:var(--space-2xs);
+  font-size:var(--text-base);
+}
+.final li::before{
+  content:counter(fc,decimal-leading-zero);
+  font-family:var(--font-outlier);font-weight:700;font-size:var(--text-sm);
+  color:var(--color-accent-strong);flex:0 0 2.2em;
+}
+.final .why{display:block;font-size:var(--text-sm);color:var(--color-muted)}
+
+/* sources + footer */
+.srcs{margin-top:var(--space-lg);display:grid;gap:var(--space-xs);font-size:var(--text-sm);color:var(--color-ink-2)}
+.srcs .s{border-left:2px solid var(--color-rule);padding-left:var(--space-sm)}
+.srcs .s b{color:var(--color-ink)}
+footer{
+  border-top:var(--rule-hair) solid var(--color-rule);
+  padding-block:var(--space-lg) var(--space-xl);
+  font-size:var(--text-sm);color:var(--color-muted);
+  display:flex;flex-wrap:wrap;gap:var(--space-sm);align-items:center;justify-content:space-between;
+}
+footer .up{font-weight:700;text-decoration:none;white-space:nowrap}
+
+/* mobile */
+@media (max-width:48rem){
+  .wrap{padding-inline:var(--space-sm)}
+  .mast{padding-block:var(--space-lg) var(--space-xl)}
+  section{padding-block:var(--space-xl)}
+  .ba{grid-template-columns:minmax(0,1fr)}
+  .miss{padding:var(--space-sm)}
+  .miss dt{flex-basis:100%}
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .miss,.jump a,#reset,.dx input{transition:none}
+  .miss:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="mast">
+    <span class="kick">OKR Framework Report · 2026-09-04</span>
+    <h1>OKR은 어디에서 망가지는가</h1>
+    <p class="sub">실무에서 가장 흔히 저지르는 10가지 실수와 구체적인 작성 교정 사례</p>
+    <p class="src">원전: 존 도어, <b>『Measure What Matters』</b>(Portfolio/Penguin, 2018) — RESOURCE 1 <b>"Google's OKR Playbook"</b>(구글 내부 가이드 재수록) 및 본문 챕터(집중·정렬·추적·도전·CFR)의 규칙과 리트머스 테스트를 재구성. 문장은 의역했고 모든 수치는 원전 출처입니다.</p>
+    <div class="statrow">
+      <div class="stat"><span class="n">10</span><span class="l">전형적 실수</span></div>
+      <div class="stat"><span class="n">6</span><span class="l">Before → After 교정 비교</span></div>
+      <div class="stat"><span class="n">10</span><span class="l">문항 자가진단</span></div>
+      <div class="stat"><span class="n">2</span><span class="l">OKR 바구니 (커밋 1.0 · 도전 0.7)</span></div>
+    </div>
+    <nav class="jump" aria-label="섹션 이동">
+      <a href="#principles">기본기: 5원칙과 채점</a>
+      <a href="#mistakes">실수 10가지</a>
+      <a href="#diagnosis">자가진단</a>
+      <a href="#final">최종 점검 10문항</a>
+    </nav>
+  </header>
+
+  <section id="principles">
+    <div class="shead">
+      <span class="no">01 · 기본기</span>
+      <h2>실수를 이해하기 전에: OKR의 작동 원리</h2>
+      <p class="lede">구글은 OKR로 "무엇을 만들지"를 계획하고, 계획 대비 진행을 추적하며, 사람과 팀 사이 우선순위를 조율합니다. 잘 쓴 OKR은 중요한 것이 무엇인지, 무엇을 최적화할지, 일상의 트레이드오프를 어떻게 판단할지 알려줍니다. 반대로 잘못 쓰인 OKR은 시간 낭비이자 빈 관리 쇼입니다.</p>
+    </div>
+    <dl class="prin">
+      <div><dt>정렬 Alignment</dt><dd>전사·팀·개인 OKR이 상하좌우로 맞물린다. 내 OKR은 상위 목표 달성에 실질 기여해야 한다.</dd></div>
+      <div><dt>집중 Focus</dt><dd>분기 목표는 3~5개. 우선순위란 무엇을 포기할지 결정하는 것이다.</dd></div>
+      <div><dt>전념 Commitment</dt><dd>리더의 지시가 아니라 팀이 논의해 동의한 상호 약속이다.</dd></div>
+      <div><dt>추적 Tracking</dt><dd>세우고 잊는 장식이 아니라 주기적으로 수치를 점검하고 궤도를 수정한다.</dd></div>
+      <div><dt>도전 Stretch</dt><dd>불가능해 보이는 목표. 구글은 도전형 실패율 약 40%를 정상으로 본다.</dd></div>
+    </dl>
+    <div class="flow">
+      <div class="step"><span class="k">OBJECTIVE</span><span class="v">"우리는 어디로 가고 싶은가" — 정성적 열망, 한 줄, 명확하고 감각적인 언어</span></div>
+      <div class="step"><span class="k">KEY RESULT</span><span class="v">"도착했음을 숫자로 증명" — 측정 가능한 결과이지 활동이 아니다. 완료 증거가 있어야 한다.</span></div>
+      <div class="step"><span class="k">INITIATIVE</span><span class="v">"그 지표를 위해 지금 무엇을 할 것인가" — 지표를 움직이는 구체적 실행</span></div>
+      <div class="scale" aria-label="구글 OKR 채점 척도">
+        <span class="r">0.0–0.3 RED</span><span class="y">0.4–0.6 YELLOW</span><span class="g">0.7–1.0 GREEN</span>
+        <span class="l" style="font-family:var(--font-body);color:var(--color-muted)">커밋형 기대 1.0 · 도전형 평균 0.7</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="mistakes">
+    <div class="shead">
+      <span class="no">02 · 본론</span>
+      <h2>실무에서 가장 흔히 저지르는 10가지 실수</h2>
+      <p class="lede">구글 플레이북이 공식 지목한 6대 트랩에, 책 본문의 경고(집중·정렬·도전·CFR)를 더해 10개로 정리했습니다. 각 실수마다 증상 → 왜 문제인가 → 교정 사례 → 체크 질문 순으로 읽으면 그대로 팀 회고 자료로 쓸 수 있습니다.</p>
+    </div>
+
+    <article class="miss" id="m1">
+      <span class="mno">실수 01</span>
+      <h3>측정할 수 없는 KR을 작성한다</h3>
+      <dl>
+        <div><dt>증상</dt><dd>"가입자를 늘린다", "고객 만족도를 개선한다"처럼 <b>숫자와 기한이 없는</b> KR.</dd></div>
+        <div><dt>왜 문제</dt><dd>분기 말에 객관적 채점이 불가능하다. 채점이 주관으로 기울면 논쟁이 시작되고 추적 기능이 무너진다.</dd></div>
+      </dl>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead><tr><th>구분</th><th>Before</th><th>After</th></tr></thead>
+          <tbody>
+            <tr><td>가입 지표</td><td>가입을 개선한다</td><td><b>5월 1일까지 일일 가입률 25% 향상</b></td></tr>
+            <tr><td>론칭 지표</td><td>Foo 4.1을 론칭한다 (팀 내부 용어)</td><td><b>Foo 4.1 론칭으로 가입 25% 증대</b> — 론칭이 아니라 그 임팩트가 KR</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="litmus"><span class="lt">CHECK</span><p>① 분기 말에 누가 채점해도 같은 점수가 나오는가? ② "사용자 100만"이면 누적인가 7일 활성인가 — 지표 정의가 모호하지 않은가? ③ 모든 KR이 마지막 날에 몰려 있다면 그것은 계획이 아니라 희망이다. 실제 날짜를 쓰라.</p></div>
+    </article>
+
+    <article class="miss" id="m2">
+      <span class="mno">실수 02</span>
+      <h3>KR을 '결과'가 아니라 '활동'으로 작성한다</h3>
+      <dl>
+        <div><dt>증상</dt><dd>구글 가이드가 지정한 위험 단어 — <b>consult(자문) · help(지원) · analyze(분석) · participate(참여)</b>가 KR에 들어 있다.</dd></div>
+        <div><dt>왜 문제</dt><dd>활동은 "끝냈다"고 표시할 수 있지만 세상을 바꾸지 못한다. KR은 활동의 최종 사용자가 겪게 될 변화를 서술해야 한다.</dd></div>
+      </dl>
+      <div class="ba">
+        <div class="cell bad"><span class="tag">BEFORE · 활동형</span><p>Colossus 레이턴시를 분석·평가한다</p></div>
+        <div class="cell good"><span class="tag">AFTER · 결과형</span><p><b>6개 Colossus 셀의 평균·테일 레이턴시 측정치를 3월 7일까지 공개</b></p></div>
+      </div>
+      <dl>
+        <div><dt>증거 필수</dt><dd>KR에는 대시보드 링크, 공개 지표 리포트, 문서처럼 <b>"존재하고, 신뢰할 수 있고, 쉽게 찾을 수 있는" 완료 증거</b>가 명시되어야 한다.</dd></div>
+      </dl>
+      <div class="litmus"><span class="lt">CHECK</span><p>이 활동을 전부 해냈는데 지표가 안 움직였다면, KR은 달성된 것인가?</p></div>
+    </article>
+
+    <article class="miss" id="m3">
+      <span class="mno">실수 03</span>
+      <h3>KR이 목표의 필요조건만 되고 충분조건이 아니다</h3>
+      <dl>
+        <div><dt>증상</dt><dd>KR을 전부 1.0으로 달성했는데도 목표가 달성되지 않는 구조. 구글 가이드는 이를 <b>"가장 교활한(pernicious)" 함정</b>으로 지목한다.</dd></div>
+        <div><dt>왜 문제</dt><dd>어려운 KR에 필요한 자원·우선순위·리스크 약속을 피하려는 유혹 때문이다. 대가는 분기 말에 자원 부족과 일정 지연이 한꺼번에 발견되는 것.</dd></div>
+      </dl>
+      <div class="ba">
+        <div class="cell bad"><span class="tag">BEFORE</span><p>O "신규 기능 출시 성공" / KR "기능 출시 완료" — 출시했지만 아무도 안 쓰면 목표는 실패</p></div>
+        <div class="cell good"><span class="tag">AFTER</span><p><b>전체 셀의 90% 이상에 X를 론칭해 전사 지표 Y를 2배로 확대</b> — 론칭이 아니라 그것이 만드는 가치가 증명 대상</p></div>
+      </div>
+      <div class="litmus"><span class="lt">LITMUS</span><p>"모든 KR에서 1.0을 받는 것이 합리적으로 가능한데도, 여전히 목표의 의도를 달성하지 못할 수 있는가?" — 그렇다면 KR 완주가 목표 완주를 보장할 때까지 KR을 추가·재작성하라.</p></div>
+    </article>
+
+    <article class="miss" id="m4">
+      <span class="mno">실수 04</span>
+      <h3>아무도 신경 쓰지 않는 저가치 목표(LVO)를 세운다</h3>
+      <dl>
+        <div><dt>증상</dt><dd>"Who cares?" OKR — 목표가 1.0으로 완성돼도 아무도 알아차리지 못한다.</dd></div>
+        <div><dt>왜 문제</dt><dd>OKR은 명확한 사업 가치를 약속해야만 자원을 쓸 자격이 생긴다.</dd></div>
+      </dl>
+      <div class="ba">
+        <div class="cell bad"><span class="tag">BEFORE · 저가치</span><p>태스크 CPU 활용률 3% 증가 — 그 자체로는 사용자에게도 회사에도 직접 이익이 없다</p></div>
+        <div class="cell good"><span class="tag">AFTER · 경제적 가치</span><p><b>품질·레이턴시를 유지하며 피크 쿼리 처리에 필요한 코어 수를 3% 감소시키고, 절감된 코어는 유휴 풀로 반환</b></p></div>
+      </div>
+      <div class="litmus"><span class="lt">LITMUS</span><p>"이 OKR이 합리적 상황에서 1.0을 받을 수 있는데도, 직접적인 최종 사용자 편익이나 경제적 편익이 없을 수 있는가?" — 그렇다면 이득 중심으로 재작성하라.</p></div>
+    </article>
+
+    <article class="miss" id="m5">
+      <span class="mno">실수 05</span>
+      <h3>커밋형(Committed)과 도전형(Aspirational)을 구분하지 않는다</h3>
+      <dl>
+        <div><dt>커밋형</dt><dd>반드시 달성하기로 합의된 목표. 일정·자원을 재조정해서라도 기약한다. <b>기대 점수 1.0</b>, 미달 시 계획·실행 오류로 포스트모템(처벌이 아니라 재발 방지). 예: SLA 준수, 기한 내 기능 인도, 목표 원가 서버 납품.</dd></div>
+        <div><dt>도전형</dt><dd>"세상이 어떻게 되었으면 하는가"의 표현. 경로와 자원이 명확하지 않아도 된다. <b>기대 평균 0.7(고분산)</b>, 구글은 실패율 약 40%를 영토의 일부로 받아들인다.</dd></div>
+        <div><dt>라벨 오용</dt><dd>커밋을 도전으로 표기하면 팀이 진지하게 받아들이지 않아 실패 확률이 급증한다. 도전을 커밋으로 표기하면 방어적 태세와 우선순위 역전 — 커밋 목표의 인력을 뜯어 도전에 투입하는 역효과 — 가 온다.</dd></div>
+        <div><dt>운영 규칙</dt><dd>도전형 OKR을 미진도 때문에 목록에서 지우면 안 된다. 지움은 우선순위·자원·문제 이해의 지속적 결함을 가리는 행위다. 분기를 넘어 계승하되, 더 적임팀에 넘기는 것은 오히려 권장한다.</dd></div>
+      </dl>
+    </article>
+
+    <article class="miss" id="m6">
+      <span class="mno">실수 06</span>
+      <h3>Sandbagging — 안전한 목표로 도피한다</h3>
+      <dl>
+        <div><dt>증상</dt><dd>확실히 해낼 수 있는 선에서만 목표를 잡고 분기 말에 100% 달성을 자축한다.</dd></div>
+        <div><dt>자원 규칙</dt><dd>구글 기준: <b>커밋 OKR은 가용 자원의 '대부분'을, 커밋+도전의 합은 가용 자원을 '약간 초과'해야</b> 한다. 전부 달성하면서 인력·자본이 남는 팀은 자원을 쌓아두거나 팀을 충분히 몰아붙이지 않는 것으로 간주된다 — 경영진이 인력을 재배분할 신호다.</dd></div>
+        <div><dt>촉매</dt><dd>목표 달성률을 성과급과 직결하면 샌드배깅은 필연이다 — 수비하고, 도전을 멈추고, 지루해한다. 그로브: OKR은 "성과평가의 근거가 되는 법적 문서가 아니라, 사람에게 스톱워치를 쥐여 자기 성과를 스스로 측정하게 하는 도구"다.</dd></div>
+        <div><dt>교정</dt><dd><b>OKR과 보상을 분리</b>하고 CFR(대화·피드백·인정) 기반 지속적 성과 관리로 전환한다. Adobe가 연간 평가를 폐기하고 Check-in으로 전환해 자발적 이직률을 급감시킨 사례가 정석이다.</dd></div>
+      </dl>
+    </article>
+
+    <article class="miss" id="m7">
+      <span class="mno">실수 07</span>
+      <h3>Business-as-usual OKR — 아무것도 바꾸지 않는 목표를 OKR이라 부른다</h3>
+      <dl>
+        <div><dt>증상</dt><dd>"지금 하던 대로 해도 달성 가능한 것"을 기준으로 목표를 작성한다. 고객과 팀이 진짜 원하는 것이 아니라 현상 유지로 가능한 것이 목표가 된다.</dd></div>
+        <div><dt>왜 문제</dt><dd>구글 가이드의 단정 — <b>"어떤 그룹의 기존 활동도 바꾸지 않는 OKR은 business-as-usual이며, 사실상 새로운 목표가 아니다."</b> 모든 새 OKR은 기존 우선순위와 약속의 변경을 수반한다.</dd></div>
+        <div><dt>함께 기억</dt><dd>에스컬레이션은 실패가 아니라 의무다. 커밋 OKR을 1.0으로 맞출 자신이 없으면 즉시 에스컬레이션해야 하며 "그것은 좋은 것일 뿐 아니라 필수"다 — 경영진이 옵션을 만들고 충돌을 해결하는 유일한 통로다.</dd></div>
+      </dl>
+      <div class="litmus"><span class="lt">CHECK</span><p>이 OKR 때문에 팀의 실제 우선순위가 바뀌는가? 아무것도 안 바뀐다면 그것은 OKR이 아니라 이미 하던 업무의 목록화다.</p></div>
+    </article>
+
+    <article class="miss" id="m8">
+      <span class="mno">실수 08</span>
+      <h3>소심한 도전 목표 — 현상에서 'x%만 더' 하는 발상</h3>
+      <dl>
+        <div><dt>증상</dt><dd>도전형 OKR이 사실상 "인력을 조금 더 보태고 운이 좀 따르면 뭘 할 수 있을까?"라는 질문에서 출발한다.</dd></div>
+        <div><dt>교정</dt><dd>출발점을 바꿔라 — <b>"대부분의 제약에서 해방된다면, 몇 년 뒤 우리(고객)의 세상은 어떤 모습인가?"</b> 그 상태를 정의하는 순간 도전형 OKR이 된다. 그 길을 모르는 것이 당연하다. 그래서 도전형이다.</dd></div>
+        <div><dt>10x 기준</dt><dd>10% 개선은 남들과 같은 일을 한다는 뜻이다 — 야심차게 성공할 가능성이 없다. Gmail은 경쟁사 대비 최대 500배인 1GB 스토리지로 이메일 카테고리 자체를 재발명했다.</dd></div>
+      </dl>
+      <div class="litmus"><span class="lt">LITMUS</span><p>고객에게 "정말 원하는 것이 무엇인가"를 물었을 때, 당신의 도전 목표가 그 요구를 충족하거나 초과하는가?</p></div>
+    </article>
+
+    <article class="miss" id="m9">
+      <span class="mno">실수 09</span>
+      <h3>목표 과다 — 집중의 실패</h3>
+      <dl>
+        <div><dt>기준</dt><dd>분기 OKR은 <b>3~5개</b>가 이상적이고, 리더 개인은 3~4개다. "혁신이란 1,000가지를 거절하는 것이다" — 스티브 잡스.</dd></div>
+        <div><dt>사례</dt><dd>MyFitnessPal CEO 마이크 리: "너무 많은 것을 적어서 우선순위가 명확하지 않았다. OKR 수를 줄이고 정말 중요한 것만 세우기로 결정했다."</dd></div>
+        <div><dt>운영</dt><dd>분기 중 새 목표 추가 요청이 오면 "기존 목표 중 무엇을 뺄 것인가"를 먼저 묻는다. 교체 없는 추가는 금지다.</dd></div>
+      </dl>
+      <div class="litmus"><span class="lt">CHECK</span><p>5분 안에 OKR을 적었다면 그것은 아마 좋은 OKR이 아니다. 목표가 한 줄에 들어가지 않으면 명확하지 않은 것이다.</p></div>
+    </article>
+
+    <article class="miss" id="m10">
+      <span class="mno">실수 10</span>
+      <h3>100% 하향식 캐스케이딩 + 목표 비공개</h3>
+      <dl>
+        <div><dt>증상</dt><dd>경영진이 목표를 일방 하달하고 개인 OKR은 각자 서랍 속에 있다.</dd></div>
+        <div><dt>대가</dt><dd>최전선 구성원의 의견이 차단되고, 수평적 협업 연결이 약해지며, "그냥 더 해라"라는 명령이 OKR을 대체한다.</dd></div>
+        <div><dt>교정</dt><dd><b>상향식 약 50%</b> — 팀과 개인이 매니저와 상의해 자기 OKR의 절반가량을 스스로 설계한다("모든 목표가 하향식이면 동기가 부식된다" — 그로브). OKR은 강요된 지시가 아니라 우선순위와 측정 방식을 정하는 협력적 사회계약이며, 회사 목표 논의가 닫힌 후에도 KR은 계속 협상된다. 그리고 <b>투명성</b> — 그로브는 자기 목표를 좌석 옆에 게시해 지나가는 사람 모두가 보게 했다. 비밀 목표는 정렬 자체를 불가능하게 한다.</dd></div>
+        <div><dt>예외</dt><dd>Zume Pizza는 초기 생존기에 100% 하향식 정렬을 의도적으로 선택했다 — 사명 필수 과제를 놓치지 않기 위해서다. 단, 성장 이후에는 점진적으로 풀어주는 것이 원칙이다. 도구는 상황에 따라, 원칙은 일관되게.</dd></div>
+      </dl>
+    </article>
+  </section>
+
+  <section id="diagnosis">
+    <div class="shead">
+      <span class="no">03 · 자가진단</span>
+      <h2>우리 팀 OKR 위험도 체크 — 10문항</h2>
+      <p class="lede">해당하는 항목에 체크하세요. 체크 하나가 곧 하나의 위험 신호이고, 결과의 번호를 누르면 해당 실수의 교정 사례로 이동합니다. 데이터는 브라우저 밖으로 나가지 않습니다.</p>
+    </div>
+    <div class="dx">
+      <ol>
+        <li><input type="checkbox" id="q1" data-miss="1"><label for="q1"><b>Q1</b>우리 팀 KR 중에 숫자와 기한이 없는 것이 있다</label></li>
+        <li><input type="checkbox" id="q2" data-miss="2"><label for="q2"><b>Q2</b>KR에 "분석·지원·참여·검토" 같은 활동 동사가 있다</label></li>
+        <li><input type="checkbox" id="q3" data-miss="3"><label for="q3"><b>Q3</b>KR을 전부 달성해도 목표 달성이라고 말하기 어렵다</label></li>
+        <li><input type="checkbox" id="q4" data-miss="4"><label for="q4"><b>Q4</b>목표가 달성돼도 아무도 차이를 느끼지 못할 것 같다</label></li>
+        <li><input type="checkbox" id="q5" data-miss="5"><label for="q5"><b>Q5</b>커밋형과 도전형을 구분 없이 섞어 쓰고 있다</label></li>
+        <li><input type="checkbox" id="q6" data-miss="6"><label for="q6"><b>Q6</b>분기 말 100% 달성이 거의 보장되는 안전한 목표다</label></li>
+        <li><input type="checkbox" id="q7" data-miss="7"><label for="q7"><b>Q7</b>이 OKR 때문에 팀 우선순위가 실제로는 바뀌지 않는다</label></li>
+        <li><input type="checkbox" id="q8" data-miss="8"><label for="q8"><b>Q8</b>도전 목표가 "현실적으로 가능한 선"에서 출발했다</label></li>
+        <li><input type="checkbox" id="q9" data-miss="9"><label for="q9"><b>Q9</b>분기 목표가 6개 이상이다</label></li>
+        <li><input type="checkbox" id="q10" data-miss="10"><label for="q10"><b>Q10</b>목표가 일방 하달이고 팀원이 다른 팀의 목표를 볼 수 없다</label></li>
+      </ol>
+      <div class="dxbox" aria-live="polite">
+        <span class="score"><span id="score">0</span><span class="of"> / 10 위험 신호</span></span>
+        <p class="verdict" id="verdict">아직 체크된 항목이 없습니다. 해당하는 항목에 체크하면 판정이 표시됩니다.</p>
+        <button type="button" id="reset">초기화</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="final" class="final">
+    <div class="shead">
+      <span class="no">04 · 최종 점검</span>
+      <h2>OKR 작성 직전 10문항</h2>
+      <p class="lede">구글 플레이북의 리트머스 테스트를 작성 순서로 압축했습니다. 하나라도 "아니오"면 아직 제출하지 마세요.</p>
+    </div>
+    <ol>
+      <li><span>Objective가 한 줄에 들어가는가?<span class="why">실수 09 — 한 줄이 안 되면 명확하지 않은 것이다</span></span></li>
+      <li><span>모든 KR에 실제 날짜가 있고 지표 정의가 모호하지 않은가?<span class="why">실수 01 — "사용자 100만"이 무엇을 세는지부터 합의하라</span></span></li>
+      <li><span>KR이 결과인가, 활동인가?<span class="why">실수 02 — "분석·지원·참여·자문" 금지어를 걸렀는가</span></span></li>
+      <li><span>KR을 전부 만점받으면 Objective도 만점인가?<span class="why">실수 03 — 충분조건 충족 여부</span></span></li>
+      <li><span>Objective가 달성돼도 아무도 신경 쓰지 않을 저가치 목표가 아닌가?<span class="why">실수 04 — "Who cares?" OKR</span></span></li>
+      <li><span>커밋·도전 라벨이 정확한가?<span class="why">실수 05 — 커밋 1.0 기대, 도전 0.7 평균·고분산</span></span></li>
+      <li><span>이 OKR이 팀의 실제 우선순위를 바꾸는가?<span class="why">실수 07 — business-as-usual은 새 목표가 아니다</span></span></li>
+      <li><span>도전 목표가 '제약 없는 세상'에서 출발했는가?<span class="why">실수 08 — 고객의 진짜 요구를 충족하거나 초과하는가</span></span></li>
+      <li><span>커밋+도전의 합이 가용 자원을 약간 초과하는가?<span class="why">실수 06 — 전부 달성 가능하면 샌드배깅이다</span></span></li>
+      <li><span>목표 수가 3~5개이고 상향식 약 50%와 전사 투명성이 확보됐는가?<span class="why">실수 09·10 — 교체 없는 추가 금지, 비밀 목표 금지</span></span></li>
+    </ol>
+  </section>
+
+  <section id="sources">
+    <div class="shead">
+      <span class="no">05 · 출처</span>
+      <h2>원전과 구성</h2>
+    </div>
+    <div class="srcs">
+      <p class="s"><b>RESOURCE 1 — "Google's OKR Playbook"</b>: 구글이 주기적으로 배포한 내부 OKR 가이드·템플릿을 존 도어가 허가 아래 재수록한 것. 6대 고전 트랩(커밋·도전 미구분, business-as-usual, 소심한 도전, 샌드배깅, 저가치 목표, 불충분한 KR), 리트머스 테스트, 커밋 1.0/도전 0.7 채점 기준의 출처.</p>
+      <p class="s"><b>본문 챕터</b>: 집중(Remind·MyFitnessPal), 정렬(하향식 50% 원칙), 추적(분기 케이던스), 도전(10x·Gmail 1GB·인텔 2,000 설계 채택), CFR(Adobe Check-in, OKR-보상 분리, 그로브의 "성과평가 도구 아님" 경고).</p>
+      <p class="s"><b>저작권 안내</b>: 이 리포트는 원전의 프레임워크·규칙·수치를 재구성하고 의역한 학습 자료입니다. 원문 문장을 그대로 수록하지 않습니다. 원서는 정발본 《적은 것의 힘》(웅진윙스) 또는 원서로 확인할 수 있습니다.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>『Measure What Matters』 재구성 리포트 · 2026-09-04</span>
+    <a class="up" href="https://hot14.github.io/reports/">리포트 아카이브 ↗</a>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  const boxes = Array.from(document.querySelectorAll('.dx input[type="checkbox"]'));
+  const scoreEl = document.getElementById('score');
+  const verdictEl = document.getElementById('verdict');
+  function update(){
+    const hit = boxes.filter(b => b.checked).map(b => Number(b.dataset.miss));
+    scoreEl.textContent = String(hit.length);
+    if (hit.length === 0){
+      verdictEl.textContent = '체크된 위험 신호가 없습니다. 해당하는 항목에 체크하면 판정이 표시됩니다.';
+      return;
+    }
+    const links = hit.map(n => '<a href="#m' + n + '">실수 0' + n + '</a>').join(' · ');
+    let band;
+    if (hit.length <= 2) band = '양호 — 현재 구조는 건강한 편입니다. 체크된 항목만 분기 말 전에 손보세요.';
+    else if (hit.length <= 5) band = '주의 — 다음 OKR 사이클 전에 아래 실수의 교정 사례를 먼저 읽으세요.';
+    else band = '시급 — 작성 방식 자체를 점검할 시점입니다. 02장 전체를 팀 회고 안건으로 올리는 것을 권합니다.';
+    verdictEl.innerHTML = band + '<br>' + links;
+  }
+  boxes.forEach(b => b.addEventListener('change', update));
+  document.getElementById('reset').addEventListener('click', function(){
+    boxes.forEach(b => { b.checked = false; });
+    update();
+  });
+})();
+</script>
+</body>
+</html>

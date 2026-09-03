@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>평가와 101에서 이기는 논리 — 절대평가 조직 구성원용 성과 증명 킷</title>
+<meta name="description" content="절대평가 조직에서 구성원이 합의된 목표 대비 성과를 수치·증거·정렬 논리로 증명하기 위한 실전 킷. Measure What Matters 10대 실수 프레임 기반: 101 미팅 5문장 스크립트, 자기평가 서술 변환기, 평가자 역질문 대응, KR/KPI 채점표, AI 진단 프롬프트.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;900&family=JetBrains+Mono:wght@600;700&display=swap">
+<style>
+/* Hallmark · pre-emit critique: P5 H4 E4 S4 R4 V4 */
+/* Hallmark · macrostructure: Long Document (workbench variant — accordion FAQ + scorecard panels)
+ * theme: Almanac · accent: emerald ~4% · paper: warm oklch(97% .008 95)
+ * type: Noto Serif KR + Pretendard + JetBrains Mono (label/numeral register)
+ * variation vs 2026-09-04_OKR report: no stat-strip hero, accordion + scorecard rhythm, quote-led opener
+ * honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass (34, 49, 50–57)
+ * contrast: pass (40–41) · nav-footer: pass (42–45)
+ */
+:root{
+  --color-paper:oklch(97.2% .008 95);
+  --color-paper-2:oklch(94.8% .011 95);
+  --color-paper-3:oklch(91.8% .014 95);
+  --color-ink:oklch(25% .014 250);
+  --color-ink-2:oklch(40% .016 250);
+  --color-muted:oklch(52% .015 250);
+  --color-accent:oklch(52% .115 165);
+  --color-accent-strong:oklch(43% .105 165);
+  --color-accent-ink:oklch(98.5% .008 165);
+  --color-warn:oklch(45% .15 30);
+  --color-warn-bg:oklch(94% .028 30);
+  --color-focus:oklch(50% .15 260);
+  --color-rule:oklch(87.5% .012 95);
+  --font-display:"Noto Serif KR",serif;
+  --font-body:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-outlier:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;
+  --space-3xs:4px;--space-2xs:8px;--space-xs:12px;--space-sm:16px;--space-md:24px;
+  --space-lg:32px;--space-xl:48px;--space-2xl:72px;
+  --text-xs:.75rem;--text-sm:.875rem;--text-base:1rem;--text-lg:1.125rem;
+  --text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.125rem;
+  --text-display:clamp(2.1rem,4.6vw,3.2rem);
+  --ease-out:cubic-bezier(.22,.61,.36,1);
+  --dur-fast:120ms;--dur:200ms;
+  --radius-sm:6px;--radius-md:10px;--radius-pill:999px;
+  --rule-hair:1px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);font-size:var(--text-base);line-height:1.7;background:var(--color-paper);color:var(--color-ink)}
+a{color:var(--color-accent-strong)}
+a:hover{color:var(--color-ink)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px;border-radius:var(--radius-sm)}
+:is(a,button,summary,label):active{opacity:.75}
+.wrap{max-width:1000px;margin-inline:auto;padding-inline:var(--space-md)}
+
+.mast{padding-block:var(--space-xl) var(--space-2xl)}
+.mast .kick{font-family:var(--font-outlier);font-size:var(--text-xs);font-weight:700;letter-spacing:.08em;color:var(--color-accent-strong);text-transform:uppercase;display:inline-block;border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-pill);padding:var(--space-3xs) var(--space-xs)}
+.mast h1{font-family:var(--font-display);font-weight:900;font-size:var(--text-display);line-height:1.12;letter-spacing:-.01em;margin-block:var(--space-sm);overflow-wrap:anywhere;min-width:0;max-width:24ch}
+.mast .sub{font-size:var(--text-lg);font-weight:600;color:var(--color-ink-2);max-width:58ch;margin-bottom:var(--space-xs)}
+.mast .src{font-size:var(--text-sm);color:var(--color-muted);max-width:70ch}
+.mast .src b{color:var(--color-ink-2)}
+.jump{display:flex;flex-wrap:wrap;gap:var(--space-2xs);margin-top:var(--space-md)}
+.jump a{font-size:var(--text-sm);font-weight:700;text-decoration:none;border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-pill);padding:var(--space-2xs) var(--space-sm);background:var(--color-paper-2);color:var(--color-ink-2);white-space:nowrap;transition:border-color var(--dur) var(--ease-out),background var(--dur) var(--ease-out)}
+.jump a:hover{border-color:var(--color-accent);background:var(--color-paper-3);color:var(--color-accent-strong)}
+
+section{padding-block:var(--space-2xl);border-top:var(--rule-hair) solid var(--color-rule)}
+.shead .no{font-family:var(--font-outlier);font-size:var(--text-sm);font-weight:700;color:var(--color-accent-strong);letter-spacing:.1em}
+.shead h2{font-family:var(--font-display);font-weight:700;font-size:var(--text-3xl);line-height:1.25;margin-top:var(--space-3xs);overflow-wrap:anywhere;min-width:0}
+.shead .lede{max-width:68ch;color:var(--color-ink-2);margin-top:var(--space-xs)}
+
+/* 01 evaluator logic */
+.lens{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:var(--space-sm);margin-top:var(--space-lg)}
+.lens div{background:var(--color-paper-2);border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-md);padding:var(--space-sm) var(--space-md)}
+.lens dt{font-weight:800;font-size:var(--text-sm)}
+.lens dd{font-size:var(--text-sm);color:var(--color-ink-2);margin-top:var(--space-3xs)}
+.abs{
+  margin-top:var(--space-lg);border-left:3px solid var(--color-accent);
+  background:var(--color-paper-2);padding:var(--space-sm) var(--space-md);border-radius:0 var(--radius-md) var(--radius-md) 0;
+}
+.abs p{font-size:var(--text-sm);color:var(--color-ink-2)}
+.abs b{color:var(--color-ink)}
+
+/* 02 script */
+.steps{margin-top:var(--space-lg);display:grid;gap:var(--space-2xs);counter-reset:sc}
+.step{
+  counter-increment:sc;display:flex;gap:var(--space-sm);align-items:baseline;
+  background:var(--color-paper-2);border:var(--rule-hair) solid var(--color-rule);
+  border-radius:var(--radius-sm);padding:var(--space-xs) var(--space-sm);
+}
+.step::before{
+  content:"" counter(sc);
+  font-family:var(--font-outlier);font-weight:700;font-size:var(--text-sm);
+  color:var(--color-accent-strong);flex:0 0 2.4em;
+}
+.step .k{font-weight:800;font-size:var(--text-sm);white-space:nowrap}
+.step .v{font-size:var(--text-sm);color:var(--color-ink-2);min-width:0}
+.step .v code{font-family:var(--font-outlier);font-size:.85em;background:var(--color-paper-3);border-radius:4px;padding:1px 5px;color:var(--color-ink)}
+
+/* 03 transforms */
+.tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-sm);margin-top:var(--space-sm)}
+.cell{border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-sm);background:var(--color-paper);padding:var(--space-sm)}
+.cell.bad{background:var(--color-warn-bg);border-color:oklch(87% .05 30)}
+.tag{font-family:var(--font-outlier);font-size:var(--text-xs);font-weight:700;letter-spacing:.08em;border-radius:var(--radius-sm);padding:2px var(--space-2xs);display:inline-block;margin-bottom:var(--space-2xs)}
+.cell.bad .tag{background:oklch(88% .05 30);color:var(--color-warn)}
+.cell.good .tag{background:oklch(90% .055 165);color:var(--color-accent-strong)}
+.cell p{font-size:var(--text-sm);line-height:1.65;overflow-wrap:anywhere}
+.cell.good p b{color:var(--color-accent-strong)}
+.stack{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.stack .pair{display:grid;gap:var(--space-2xs)}
+.stack .pair>p{font-size:var(--text-xs);font-weight:700;font-family:var(--font-outlier);color:var(--color-muted);letter-spacing:.06em}
+
+/* 04 faq */
+details{border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-md);background:var(--color-paper-2);margin-top:var(--space-2xs)}
+summary{
+  cursor:pointer;list-style:none;display:flex;gap:var(--space-2xs);align-items:baseline;
+  padding:var(--space-xs) var(--space-sm);font-weight:700;font-size:var(--text-sm);
+}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";font-family:var(--font-outlier);font-weight:700;color:var(--color-accent-strong);flex:0 0 1em}
+details[open] summary::before{content:"−"}
+details .a{padding:0 var(--space-sm) var(--space-sm) calc(var(--space-sm) + 1em);font-size:var(--text-sm);color:var(--color-ink-2)}
+details .a b{color:var(--color-ink)}
+details .a .ft{font-family:var(--font-outlier);font-size:var(--text-xs);font-weight:700;color:var(--color-accent-strong);letter-spacing:.06em}
+
+/* 05 scorecard */
+.card{display:grid;gap:var(--space-2xs);margin-top:var(--space-lg)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--space-xs) var(--space-sm);align-items:center;background:var(--color-paper-2);border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-sm);padding:var(--space-2xs) var(--space-sm)}
+.row.dim{border-color:oklch(82% .06 30);background:var(--color-warn-bg)}
+.row .q{font-size:var(--text-sm);min-width:0}
+.row .q b{font-family:var(--font-outlier);font-size:var(--text-xs);color:var(--color-accent-strong);margin-right:var(--space-2xs)}
+.row .q .ref{display:block;font-size:var(--text-xs);color:var(--color-muted)}
+.row .opts{display:flex;gap:var(--space-2xs);white-space:nowrap}
+.row label{font-size:var(--text-xs);font-weight:700;color:var(--color-muted);display:inline-flex;align-items:center;gap:3px;cursor:pointer}
+.row input{appearance:none;width:15px;height:15px;border:1px solid var(--color-rule);border-radius:4px;background:var(--color-paper);display:inline-grid;place-items:center;cursor:pointer;vertical-align:-2px;transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)}
+.row input:checked{background:var(--color-accent);border-color:var(--color-accent)}
+.row input:checked::after{content:"";width:7px;height:4px;border-left:2px solid var(--color-accent-ink);border-bottom:2px solid var(--color-accent-ink);transform:rotate(-45deg) translateY(-1px)}
+.row input:disabled{opacity:.55;cursor:not-allowed}
+.board{
+  margin-top:var(--space-md);border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-md);
+  background:var(--color-paper);padding:var(--space-md);
+  display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm);
+}
+.board .score{font-family:var(--font-outlier);font-weight:700;font-size:var(--text-2xl);color:var(--color-accent-strong)}
+.board .of{font-family:var(--font-outlier);font-size:var(--text-sm);color:var(--color-muted)}
+.board .verdict{flex:1 1 22rem;min-width:0;font-size:var(--text-sm);color:var(--color-ink-2)}
+.board .verdict a{white-space:nowrap}
+#reset2{font-family:var(--font-body);font-size:var(--text-sm);font-weight:700;border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-pill);background:var(--color-paper-2);color:var(--color-ink-2);cursor:pointer;padding:var(--space-2xs) var(--space-sm);white-space:nowrap;transition:border-color var(--dur) var(--ease-out),background var(--dur) var(--ease-out)}
+#reset2:hover{border-color:var(--color-accent);color:var(--color-accent-strong);background:var(--color-paper-3)}
+
+/* 06 prompt */
+.prompt{margin-top:var(--space-lg);border:var(--rule-hair) solid var(--color-rule);border-radius:var(--radius-md);background:var(--color-paper-3);padding:var(--space-md)}
+.prompt pre{font-family:var(--font-outlier);font-size:var(--text-xs);line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--color-ink-2);min-width:0}
+.promptbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm);margin-top:var(--space-sm)}
+#copy{
+  font-family:var(--font-body);font-size:var(--text-sm);font-weight:700;border:none;
+  border-radius:var(--radius-pill);background:var(--color-accent);color:var(--color-accent-ink);
+  cursor:pointer;padding:var(--space-2xs) var(--space-md);white-space:nowrap;
+  transition:background var(--dur) var(--ease-out);
+}
+#copy:hover{background:var(--color-accent-strong)}
+#copy:disabled{opacity:.55;cursor:not-allowed}
+#copy:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
+.promptbar .note{font-size:var(--text-xs);color:var(--color-muted)}
+
+footer{border-top:var(--rule-hair) solid var(--color-rule);padding-block:var(--space-lg) var(--space-xl);font-size:var(--text-sm);color:var(--color-muted);display:flex;flex-wrap:wrap;gap:var(--space-sm);align-items:center;justify-content:space-between}
+footer .up{font-weight:700;text-decoration:none;white-space:nowrap}
+
+@media (max-width:48rem){
+  .wrap{padding-inline:var(--space-sm)}
+  .mast{padding-block:var(--space-lg) var(--space-xl)}
+  section{padding-block:var(--space-xl)}
+  .tr{grid-template-columns:minmax(0,1fr)}
+  .row{grid-template-columns:minmax(0,1fr)}
+  .miss,.cell{min-width:0}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .jump a,#reset2,#copy,.row input{transition:none}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="mast">
+    <span class="kick">Performance Review & 101 Kit · 2026-09-04</span>
+    <h1>평가와 101에서 이기는 논리</h1>
+    <p class="sub">절대평가 조직의 구성원이 성과를 수치·증거·정렬 논리로 증명하는 실전 킷</p>
+    <p class="src">프레임: 존 도어 <b>『Measure What Matters』</b> 10대 실수( RESOURCE 1 "Google's OKR Playbook") · 자매 문서: <a href="https://hot14.github.io/reports/2026-09-04_OKR-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC-10%EA%B0%80%EC%A7%80-%EC%8B%A4%EC%88%98/OKR%ED%94%84%EB%A0%88%EC%9D%8C%ED%94%84%EB%A0%88%EC%9D%B4%ED%81%AC_%EB%A6%AC%ED%8F%AC%ED%8A%B8.html">OKR 프레임워크 완전 분석 리포트</a></p>
+    <nav class="jump" aria-label="섹션 이동">
+      <a href="#lens">평가자의 눈</a>
+      <a href="#script">101 스크립트 5문장</a>
+      <a href="#transform">서술 변환기</a>
+      <a href="#faq">역질문 대응</a>
+      <a href="#score">KR·KPI 채점표</a>
+      <a href="#ai">AI 진단 프롬프트</a>
+    </nav>
+  </header>
+
+  <section id="lens">
+    <div class="shead">
+      <span class="no">01 · 평가자의 눈</span>
+      <h2>직책자는 '남과의 비교'가 아니라 '기대수준 대비'로 본다</h2>
+      <p class="lede">절대평가 조직에서 평가의 기준은 동료가 아니라 <b>목표 수립 시 합의된 기대수준</b>입니다. 따라서 고득점의 본질은 열정 어필이 아니라, "합의된 목표가 무엇이었고, 그 대비 결과가 수치로 어떻게 증명되는가"를 흐름 끊기지 않게 보여주는 일입니다.</p>
+    </div>
+    <dl class="lens">
+      <div><dt>① 달성 — 목표 대비</dt><dd>합의된 O·KR의 점수(1.0 기준). 커밋은 1.0을, 도전은 0.7 전후를 설계된 기대로 설명할 수 있어야 합니다.</dd></div>
+      <div><dt>② 증거 — 검증 가능한 데이터</dt><dd>대시보드·지표 리포트·산출물 링크. "존재하고, 신뢰할 수 있고, 쉽게 찾을 수 있는" 증거가 없는 주장은 감점 요인입니다.</dd></div>
+      <div><dt>③ 정렬 — 상위 목표 기여</dt><dd>내 성과가 조직 목표의 어떤 지표를 움직였는지 한 문장. 정렬 논리가 없으면 아무리 잘해도 '헛수고'로 읽힙니다.</dd></div>
+      <div><dt>④ 행동 — 다면 피드백 요소</dt><dd>업무역량(수치)과 함께 자율적 판단·에스컬레이션·협업 소통의 <b>사건 기반</b> 사례. 성격 자랑이 아니라 행동 증거로.</dd></div>
+    </dl>
+    <div class="abs">
+      <p><b>핵심 반전:</b> 평가를 높이는 가장 확실한 방법은 "잘했습니다"를 늘리는 게 아니라, <b>평가자가 확인해야 할 확인 작업(채점)을 미리 끝내두는 것</b>입니다. 아래 5문장 스크립트는 그 채점표를 말로 전달하는 순서입니다.</p>
+    </div>
+  </section>
+
+  <section id="script">
+    <div class="shead">
+      <span class="no">02 · 101 스크립트</span>
+      <h2>101 미팅·성과 면담 5문장 구조</h2>
+      <p class="lede">결론 → 정렬 → 근거 → 기여 → 제안. 이 순서는 평가자가 궁금한 순서와 정확히 같습니다. 빈칸만 채우면 3분 안에 논리가 닫히는 자기 성과 브리핑이 완성됩니다.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="k">결론</span><span class="v">"이번 분기 O <code>'___'</code>에서 KR 3개 중 2개를 <code>1.0</code>, 1개를 <code>0.7</code>로 마쳤습니다."</span></div>
+      <div class="step"><span class="k">정렬</span><span class="v">"이 목표는 조직 목표 <code>'___'</code>의 <code>___</code> 지표에 직접 기여합니다."</span></div>
+      <div class="step"><span class="k">근거</span><span class="v">"측정 기준은 <code>___</code>(예: 7일 활성 기준)이고, 증거는 <code>___</code>입니다(대시보드·리포트 링크)."</span></div>
+      <div class="step"><span class="k">기여</span><span class="v">"제 기여는 <code>___</code>이고, 팀 차원의 성과인 <code>___</code>와는 구분됩니다."</span></div>
+      <div class="step"><span class="k">제안</span><span class="v">"다음 분기는 <code>___</code>을 제안합니다. 필요한 결정·자원은 <code>___</code>입니다 — 분기 중 에스컬레이션 기록도 함께 첨부했습니다."</span></div>
+    </div>
+    <div class="abs" style="margin-top:var(--space-md)">
+      <p><b>0.7을 부끄러워하지 마세요.</b> 커밋이 아니라 도전형으로 합의된 목표라면 0.7은 실패가 아니라 <b>설계된 기대값</b>입니다 — 구글의 도전형 기대 평균은 0.7이고 실패율 약 40%까지 정상 범위입니다. 오히려 전부 1.0이면 평가자는 샌드배깅(안전한 목표)을 의심합니다.</p>
+    </div>
+  </section>
+
+  <section id="transform">
+    <div class="shead">
+      <span class="no">03 · 서술 변환기</span>
+      <h2>자기평가 문장 교정 — 활동형을 증명형으로</h2>
+      <p class="lede">평가서·101에서 감점을 부르는 문장은 겸손이 아니라 <b>측정 불가능한 활동 서술</b>입니다. 책의 실수 01·02가 자기평가 언어에서 그대로 재발하는 형태입니다. 아래 4쌍을 그대로 대입해 쓰세요.</p>
+    </div>
+    <div class="stack">
+      <div class="pair">
+        <p>PAIR 1 — 총괄 어필</p>
+        <div class="tr">
+          <div class="cell bad"><span class="tag">BEFORE</span><p>"맡은 업무를 열심히 수행했습니다."</p></div>
+          <div class="cell good"><span class="tag">AFTER</span><p>"O '가입 증대'의 KR1을 <b>목표 +25% 대비 실측 +31%(126%)로 달성</b> — 측정 기준 7일 활성, 증거는 분기 지표 리포트."</p></div>
+        </div>
+      </div>
+      <div class="pair">
+        <p>PAIR 2 — 협업</p>
+        <div class="tr">
+          <div class="cell bad"><span class="tag">BEFORE</span><p>"여러 팀과 적극 협업했습니다."</p></div>
+          <div class="cell good"><span class="tag">AFTER</span><p>"A팀 의존 작업 3건을 <b>2주 조기 종료</b>시켜 KR1 달성 시점을 앞당겼습니다 — 협업 체크인 로그가 증거입니다."</p></div>
+        </div>
+      </div>
+      <div class="pair">
+        <p>PAIR 3 — 실패·지연 (가장 고득점 구간)</p>
+        <div class="tr">
+          <div class="cell bad"><span class="tag">BEFORE</span><p>"이슈가 많았지만 최선을 다했습니다."</p></div>
+          <div class="cell good"><span class="tag">AFTER</span><p>"리소스 부족으로 KR3가 지연 — <b>6주차에 정식 에스컬레이션</b>(기록 링크) 후 우선순위를 재조정해 0.7로 마쳤고, 원인은 다음 분기 계획에 반영했습니다."</p></div>
+        </div>
+      </div>
+      <div class="pair">
+        <p>PAIR 4 — 다짐</p>
+        <div class="tr">
+          <div class="cell bad"><span class="tag">BEFORE</span><p>"다음 분기에도 더 잘하겠습니다."</p></div>
+          <div class="cell good"><span class="tag">AFTER</span><p>"다음 분기 O <code>'___'</code>을 제안합니다 — 이번 분기 측정 기준(<code>___</code>)을 유지해 기대수준을 명확히 하고, 커밋 2·도전 1 바구니로 설계했습니다."</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="shead">
+      <span class="no">04 · 역질문 대응</span>
+      <h2>직책자 예상 역질문 6 — 미리 답을 준비하라</h2>
+      <p class="lede">101에서 방어가 무너지는 지점은 결과가 아니라 후속 질문입니다. 10대 실수 프레임을 뒤집으면 평가자의 질문이 예측됩니다.</p>
+    </div>
+    <details>
+      <summary>"이 목표가 조직 목표랑 왜 관계있죠?" — 정렬 공격</summary>
+      <div class="a"><b>답:</b> 정렬 한 문장 + 지표 매핑. "조직 목표 '___'의 ___ 지표에 기여하도록, 제 O의 KR2가 선행 지표 역할을 합니다."<br><span class="ft">FRAME</span> 실수 07·10 — 정렬 문장이 없는 OKR은 헛수고로 읽힙니다.</div>
+    </details>
+    <details>
+      <summary>"70%면 실패 아닌가요?" — 달성률 공격</summary>
+      <div class="a"><b>답:</b> 커밋/도전 구분을 먼저 확인시키세요. "이 목표는 도전형으로 합의됐고, 도전형 기대 평균은 0.7(고분산)입니다. 1.0을 약속하는 목표라면 커밋으로 표기했어야 합니다."<br><span class="ft">FRAME</span> 실수 05 — 라벨이 정확했다면 0.7은 설계된 성공입니다.</div>
+    </details>
+    <details>
+      <summary>"100% 다 했네요? 쉬운 목표 아니었나요?" — 샌드배깅 공격</summary>
+      <div class="a"><b>답:</b> 자원 논리로 반박합니다. "커밋+도전 합이 가용 자원을 초과하도록 설계했습니다. 이 중 가장 어려웠던 지점 2가지는 ___입니다(증거)."<br><span class="ft">FRAME</span> 실수 06 — 전부 달성이 기본값이 되면 평가자는 목표 후퇴를 의심합니다.</div>
+    </details>
+    <details>
+      <summary>"그중 본인 기여가 얼마인가요?" — 기여도 공격</summary>
+      <div class="a"><b>답:</b> 내 손이 닿은 '결정'과 팀 공로를 구분해 말합니다. "의사결정 3건(___)은 제 몫이고, 실행은 팀 결과입니다. 구분 기준은 결정 로그입니다."<br><span class="ft">FRAME</span> 다면 피드백 — 기여도를 흐리면 다면 점수도 함께 흐려집니다.</div>
+    </details>
+    <details>
+      <summary>"이 숫자, 정의가 뭐죠?" — 지표 정의 공격</summary>
+      <div class="a"><b>답:</b> 목표 수립 시 합의된 정의 문서를 보여줍니다. "'사용자 100만'이 누적인지 7일 활성인지, 4월 1주에 합의한 정의대로 측정했습니다."<br><span class="ft">FRAME</span> 실수 01 — 정의 불일치는 채점 무효 처리됩니다.</div>
+    </details>
+    <details>
+      <summary>"그래서 다음 분기엔 뭘 하게?" — 미래 공격</summary>
+      <div class="a"><b>답:</b> 제안 1줄 + 필요한 결정을 정식으로 요청합니다. "'___'을 O로 제안합니다. 이를 위해 __ 결정이 필요합니다 — 이번 분기 에스컬레이션 사례처럼 정식 경로로 올리겠습니다."<br><span class="ft">FRAME</span> 실수 07 — 에스컬레이션은 실패가 아니라 의무이자 제안의 증거입니다.</div>
+    </details>
+  </section>
+
+  <section id="score">
+    <div class="shead">
+      <span class="no">05 · 채점표</span>
+      <h2>내 KR·KPI 제출 전 채점 — 6기준 / 12점</h2>
+      <p class="lede">작성한 OKR·성과 서술을 아래 6개 기준으로 스스로 채점하세요. 각 기준 0(아니다)·1(부분적)·2(그렇다). 판정은 브라우저에서만 계산되고 전송되지 않습니다.</p>
+    </div>
+    <div class="card">
+      <div class="row" data-c="1" data-href="../2026-09-04_OKR-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC-10%EA%B0%80%EC%A7%80-%EC%8B%A4%EC%88%98/OKR%ED%94%84%EB%A0%88%EC%9D%8C%ED%94%84%EB%A0%88%EC%9D%B4%ED%81%AC_%EB%A6%AC%ED%8F%AC%ED%8A%B8.html#m1"><span class="q"><b>C1</b>모든 KR에 숫자와 기한이 있다<span class="ref">실수 01 — 측정 불가능한 KR</span></span><span class="opts"><label><input type="radio" name="c1" value="0">0</label><label><input type="radio" name="c1" value="1">1</label><label><input type="radio" name="c1" value="2" checked>2</label></span></div>
+      <div class="row" data-c="2" data-href="../2026-09-04_OKR-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC-10%EA%B0%80%EC%A7%80-%EC%8B%A4%EC%88%98/OKR%ED%94%84%EB%A0%88%EC%9D%8C%ED%94%84%EB%A0%88%EC%9D%B4%ED%81%AC_%EB%A6%AC%ED%8F%AC%ED%8A%B8.html#m2"><span class="q"><b>C2</b>KR에 활동 동사(분석·지원·참여·자문)가 없다<span class="ref">실수 02 — 활동형 KR</span></span><span class="opts"><label><input type="radio" name="c2" value="0">0</label><label><input type="radio" name="c2" value="1">1</label><label><input type="radio" name="c2" value="2" checked>2</label></span></div>
+      <div class="row" data-c="3" data-href="../2026-09-04_OKR-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC-10%EA%B0%80%EC%A7%80-%EC%8B%A4%EC%88%98/OKR%ED%94%84%EB%A0%88%EC%9D%8C%ED%94%84%EB%A0%88%EC%9D%B4%ED%81%AC_%EB%A6%AC%ED%8F%AC%ED%8A%B8.html#m3"><span class="q"><b>C3</b>KR을 전부 달성하면 목표도 달성된다<span class="ref">실수 03 — 필요·불충분</span></span><span class="opts"><label><input type="radio" name="c3" value="0">0</label><label><input type="radio" name="c3" value="1">1</label><label><input type="radio" name="c3" value="2" checked>2</label></span></div>
+      <div class="row" data-c="4" data-href="#lens"><span class="q"><b>C4</b>상위 목표 지표에 기여한다는 문장이 있다<span class="ref">정렬 — Alignment</span></span><span class="opts"><label><input type="radio" name="c4" value="0">0</label><label><input type="radio" name="c4" value="1">1</label><label><input type="radio" name="c4" value="2" checked>2</label></span></div>
+      <div class="row" data-c="5" data-href="../2026-09-04_OKR-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC-10%EA%B0%80%EC%A7%80-%EC%8B%A4%EC%88%98/OKR%ED%94%84%EB%A0%88%EC%9D%8C%ED%94%84%EB%A0%88%EC%9D%B4%ED%81%AC_%EB%A6%AC%ED%8F%AC%ED%8A%B8.html#m2"><span class="q"><b>C5</b>증거(대시보드·리포트 링크)가 실제로 존재한다<span class="ref">실수 02 — 완료 증거</span></span><span class="opts"><label><input type="radio" name="c5" value="0">0</label><label><input type="radio" name="c5" value="1">1</label><label><input type="radio" name="c5" value="2" checked>2</label></span></div>
+      <div class="row" data-c="6" data-href="#faq"><span class="q"><b>C6</b>내 기여와 팀 기여를 구분해 설명할 수 있다<span class="ref">기여도·다면 피드백 방어</span></span><span class="opts"><label><input type="radio" name="c6" value="0">0</label><label><input type="radio" name="c6" value="1">1</label><label><input type="radio" name="c6" value="2" checked>2</label></span></div>
+    </div>
+    <div class="board" aria-live="polite">
+      <span class="score"><span id="t">12</span><span class="of"> / 12</span></span>
+      <p class="verdict" id="vt">기본값은 만점입니다. 실제 상태에 맞게 조정하세요 — 0점 항목이 평가에서 가장 먼저 공격받는 지점입니다.</p>
+      <button type="button" id="reset2">초기화</button>
+    </div>
+  </section>
+
+  <section id="ai">
+    <div class="shead">
+      <span class="no">06 · AI 진단</span>
+      <h2>회사 AI(Gemini 등)에 진단시키는 프롬프트</h2>
+      <p class="lede">아래 프롬프트를 복사해 사내 AI에 붙여넣고, 빈칸에 본인의 분기 OKR과 실적을 채우세요. 이 페이지와 자매 리포트 링크를 함께 전달하면 AI가 10대 실수 근거를 그대로 인용해 진단합니다.</p>
+    </div>
+    <div class="prompt">
+<pre id="ptext">너는 절대평가 조직의 성과 코치다. 내 이번 분기 OKR과 실적을
+『Measure What Matters』의 10대 실수 프레임으로 진단하라.
+
+[진단 기준 — 10대 실수]
+1 측정불가 KR / 2 활동형 KR(분석·지원·참여) / 3 KR 필요·불충분 /
+4 저가치 목표(Who cares?) / 5 커밋·도전 미구분 / 6 샌드배깅 /
+7 business-as-usual / 8 소심한 도전 / 9 목표 과다 / 10 하향식·비투명
+참고 문서: https://hot14.github.io/reports/2026-09-04_OKR-프레임워크-10가지-실수/OKR프레임워크_리포트.html
+
+[출력 형식]
+① KR별 실수 매핑표 — 해당 실수 번호 + 근거가 되는 원문 구절
+② KR별 교정안 — Before → After (숫자·기한·증거 포함)
+③ 평가자 예상 역질문 5개 + 모범 답변 (0.7 달성 논리, 기여도 구분 포함)
+④ 최종 판정 — 제출 가능 여부 1줄 + 제출 전 필수 보완 3가지
+
+[내 분기 OKR]
+O:
+KR1:
+KR2:
+KR3:
+[실적 데이터·증거 링크]
+-</pre>
+      <div class="promptbar">
+        <button type="button" id="copy">프롬프트 복사</button>
+        <span class="note" id="cnote">클릭하면 클립보드에 복사됩니다</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>『Measure What Matters』 프레임 재구성 · 자매 문서: OKR 프레임워크 완전 분석 · 2026-09-04</span>
+    <a class="up" href="https://hot14.github.io/reports/">리포트 아카이브 ↗</a>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  // scorecard
+  const rows = Array.from(document.querySelectorAll('.row'));
+  const tEl = document.getElementById('t');
+  const vt = document.getElementById('vt');
+  function update(){
+    let total = 0, weak = [];
+    rows.forEach(function(r){
+      const val = Number(r.querySelector('input:checked').value);
+      total += val;
+      r.classList.toggle('dim', val === 0);
+      if (val <= 1) weak.push({c: r.dataset.c, v: val});
+    });
+    tEl.textContent = String(total);
+    if (total === 12){
+      vt.innerHTML = '제출 준비 완료 — 101에서 증명 가능한 구조입니다. 02장 5문장 스크립트로 옮기세요.';
+    } else if (total >= 7){
+      vt.innerHTML = '보완 필요 — 약한 기준: ' + weak.map(w => { const r = rows.find(x => x.dataset.c === w.c); return '<a href="' + r.dataset.href + '">C' + w.c + '</a>'; }).join(' · ') + '. 0점부터 수정하세요.';
+    } else {
+      vt.innerHTML = '다시 작성 — 이 상태로는 평가 방어가 어렵습니다. ' + weak.map(w => { const r = rows.find(x => x.dataset.c === w.c); return '<a href="' + r.dataset.href + '">C' + w.c + '</a>'; }).join(' · ') + ' 약한 기준부터 보강하세요.';
+    }
+  }
+  rows.forEach(r => r.addEventListener('change', update));
+  document.getElementById('reset2').addEventListener('click', function(){
+    rows.forEach(r => { r.querySelector('input[value="2"]').checked = true; });
+    update();
+  });
+  update();
+
+  // copy prompt
+  const btn = document.getElementById('copy');
+  const note = document.getElementById('cnote');
+  btn.addEventListener('click', function(){
+    const text = document.getElementById('ptext').textContent;
+    const done = function(){
+      note.textContent = '복사됐습니다 — 사내 AI에 붙여넣으세요';
+      btn.disabled = true;
+      setTimeout(function(){ btn.disabled = false; note.textContent = '클릭하면 클립보드에 복사됩니다'; }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e){ note.textContent = '복사 실패 — 텍스트를 직접 선택해 복사하세요'; }
+      document.body.removeChild(ta);
+    }
+  });
+})();
+</script>
+</body>
+</html>

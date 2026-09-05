@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>남촌물상TV 지식 탐색기</title>
+<style>
+:root{--bg:#fafaf8;--card:#fff;--ink:#1a1a18;--sub:#6b6b66;--line:#e5e3dd;--acc:#8a6d1a;--chip:#f0ead8}
+*{box-sizing:border-box}body{margin:0;font-family:'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{padding:16px 24px;border-bottom:1px solid var(--line);background:var(--card)}
+header h1{font-size:18px;margin:0 0 4px}
+header .sub{font-size:13px;color:var(--sub)}
+header .sub a{color:var(--acc)}
+main{max-width:1000px;margin:0 auto;padding:20px 24px 80px}
+.guide{background:#eef4fb;border:1px solid #c5d8ec;border-radius:10px;padding:14px 18px;font-size:13.5px;line-height:1.9;margin-bottom:20px;color:#2a4a6b}
+.guide b{color:#1a3a5c}
+input#q{width:100%;padding:12px 16px;border:2px solid var(--line);border-radius:10px;font-size:15px;background:var(--card);color:var(--ink)}
+.cat-head{font-size:15px;font-weight:700;margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--acc);color:var(--acc)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.concept-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;cursor:pointer;font-size:13.5px}
+.concept-card:hover{border-color:var(--acc);background:#fdf9ee}
+.concept-card .cnt{float:right;color:var(--sub);font-size:12px}
+.video-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.video-item .vt{font-size:14.5px;font-weight:700;margin-bottom:6px}
+.video-item .vt a{color:var(--ink);text-decoration:none}
+.video-item .vi{font-size:12.5px;color:var(--sub);display:flex;gap:14px;flex-wrap:wrap}
+.video-item .ts{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.video-item .ts a{background:var(--chip);color:#5d5122;border-radius:4px;padding:2px 8px;font-size:12px;text-decoration:none;font-variant-numeric:tabular-nums}
+.board-box{background:#f0f7f0;border:1px solid #c8e6c9;border-radius:8px;padding:10px 14px;margin-top:10px}
+.board-box .bl{font-size:11.5px;color:#2e7d32;font-weight:600;margin-bottom:4px}
+.board-box .pillars{font-size:16px;font-weight:700;font-family:serif;letter-spacing:2px}
+.board-box.conf-h{border-color:#a5d6a7}.board-box.conf-m{border-color:#e6c85a}.board-box.conf-l{border-color:#ef9a9a}
+.board-box.conf-h .bl{color:#2e7d32}.board-box.conf-m .bl{color:#8a6d1a}.board-box.conf-l .bl{color:#c62828}
+.seg-ex{font-size:12.5px;color:#444;margin-top:8px;padding:8px 10px;background:#f8f6f0;border-radius:6px;line-height:1.6}
+.seg-ex .st{color:var(--acc);font-variant-numeric:tabular-nums;font-weight:600;margin-right:6px}
+.doc-link{display:inline-block;margin-top:6px;font-size:12.5px;color:var(--acc);text-decoration:none}
+.doc-link:hover{text-decoration:underline}
+.empty{color:var(--sub);text-align:center;padding:40px;font-size:14px}
+.back{cursor:pointer;color:var(--acc);font-size:13.5px;margin-bottom:14px;display:inline-block}
+</style>
+</head>
+<body>
+<header>
+<h1>남촌물상TV 지식 탐색기</h1>
+<div class="sub">401편 강의·상담 자막 + 칠판 원국 판독 통합 검색 · <a href="../index.html">← 문서 아카이브</a></div>
+</header>
+<main>
+<div class="guide"><b>사용법 3단계</b><br><b>①</b> 카테고리를 고르거나 검색창에 찾고 싶은 개념(갑기합, 을목 일간, 재물 등)을 입력<br><b>②</b> 관련 영상 목록이 조회수 순으로 표시 — 칠판 원국 판독 결과도 함께 표시<br><b>③</b> 타임스탬프 클릭 → 유튜브 해당 장면으로 바로 이동 · 문서 링크 클릭 → 전체 문서 보기</div>
+<input id="q" placeholder="검색: 갑기합, 을목 일간, 재물, 결혼, 도화 ...">
+<div id="content"></div>
+</main>
+<script src="kg.json"></script>
+<script src="boards_data.json"></script>
+<script src="segments.json"></script>
+<script>
+"use strict";
+var KGD=KG,SEGD=SEG,BRD=BOARDS;
+var nodes=KGD.nodes,edges=KGD.edges,segs=SEGD;
+var VT={};nodes.forEach(function(n){if(n.type==="video")VT[n.id.slice(2)]=n;});
+var cvIdx={};edges.forEach(function(e){
+  var vs=e.s.startsWith("v:")?e.s:e.t;
+  var cs=e.s.startsWith("v:")?e.t:e.s;
+  if(!VT[vs])return;
+  var cn=null;for(var i=0;i<nodes.length;i++){if(nodes[i].id===cs){cn=nodes[i];break;}}
+  if(!cn||["video","series","chart"].indexOf(cn.type)>=0)return;
+  (cvIdx[cs]=cvIdx[cs]||[]).push({vid:vs,f:e.f});
+});
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function fmt(s){s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");}
+function norm(s){return(s||"").replace(/\s+/g,"");}
+function getB(v){return BRD&&BRD[v]?BRD[v]:null;}
+function boardHtml(vid){
+  var b=getB(vid);if(!b||!b["천간"]||b["천간"].length<4)return"";
+  var cc=b.confidence==="high"?"conf-h":b.confidence==="mid"?"conf-m":"conf-l";
+  var ct=b.confidence==="high"?"높음":b.confidence==="mid"?"중간":"낮음";
+  return'<div class="board-box '+cc+'"><div class="bl">칠판 원국 판독 (신뢰도: '+ct+')</div><div class="pillars">'+(b["천간"]||[]).join(" ")+' / '+(b["지지"]||[]).join(" ")+'</div>'+(b.note?'<div style="font-size:11.5px;color:var(--sub);margin-top:4px">'+esc(b.note).substring(0,80)+'</div>':"")+'</div>';
+}
+function segEx(vid,q){
+  if(!q)return"";var nq=norm(q);var hits=[];
+  for(var i=0;i<segs.length;i++){if(segs[i].v===vid&&norm(segs[i].x).indexOf(nq)>=0){hits.push(segs[i]);if(hits.length>=2)break;}}
+  if(!hits.length)return"";
+  return hits.map(function(h){return'<div class="seg-ex"><span class="st">['+fmt(h.t)+']</span>'+esc(h.x.substring(0,80))+(h.x.length>80?"…":"")+'</div>';}).join("");
+}
+var CATS=[{key:"일간",label:"일간",emoji:"🌞"},{key:"합충",label:"합·충",emoji:"🔗"},{key:"십성",label:"십성",emoji:"⭐"},{key:"신살",label:"신살",emoji:"✨"},{key:"오행",label:"오행",emoji:"🌿"},{key:"물상론",label:"물상론",emoji:"📜"},{key:"주제",label:"주제",emoji:"💬"}];
+function showCategories(){
+  var h='<div class="cat-head">📂 카테고리별 탐색</div><div class="concept-grid">';
+  CATS.forEach(function(c){var count=nodes.filter(function(n){return n.type===c.key;}).length;h+='<div class="concept-card" onclick="showCat(\''+c.key+'\')">'+c.emoji+' '+c.label+' <span class="cnt">'+count+'개</span></div>';});
+  h+='</div>';
+  var top=nodes.filter(function(n){return["video","chart","series"].indexOf(n.type)<0&&(n.count||0)>=50;}).sort(function(a,b){return b.count-a.count;}).slice(0,20);
+  h+='<div class="cat-head">🔥 자주 언급된 개념 TOP 20</div><div class="concept-grid">';
+  top.forEach(function(n){h+='<div class="concept-card" onclick="showConcept(\''+n.id+'\')">'+esc(n.label)+' <span class="cnt">'+n.count+'영상</span></div>';});
+  h+='</div>';document.getElementById("content").innerHTML=h;
+}
+function showCat(key){
+  var label="";CATS.forEach(function(c){if(c.key===key)label=c.emoji+" "+c.label;});
+  var list=nodes.filter(function(n){return n.type===key;}).sort(function(a,b){return(b.count||0)-(a.count||0);});
+  var h='<div class="back" onclick="showCategories()">← 돌아가기</div><div class="cat-head">'+label+' ('+list.length+'개)</div><div class="concept-grid">';
+  list.forEach(function(n){h+='<div class="concept-card" onclick="showConcept(\''+n.id+'\')">'+esc(n.label)+' <span class="cnt">'+(n.count||0)+'영상</span></div>';});
+  h+='</div>';document.getElementById("content").innerHTML=h;
+}
+function videoCard(vid,searchWord){
+  var v=VT[vid];if(!v)return"";
+  var html='<div class="video-item">';
+  html+='<div class="vt"><a href="https://www.youtube.com/watch?v='+vid+'" target="_blank">'+esc(v.label)+'</a></div>';
+  html+='<div class="vi"><span>'+(v.date||"미상")+'</span><span>'+fmt(v.dur||0)+'</span><span>조회 '+(v.views||0).toLocaleString()+'</span></div>';
+  html+=boardHtml(vid);
+  if(searchWord){var ex=segExcerpt(vid,searchWord);if(ex)html+='<div class="seg-ex">'+ex+'</div>';}
+  var docFile=null;for(var i=0;i<nodes.length;i++){if(nodes[i].id==="v:"+vid&&nodes[i].file){docFile=nodes[i].file;break;}}
+  if(docFile)html+='<a class="doc-link" href="../videos/'+docFile+'">📄 전체 문서 보기</a>';
+  html+='</div>';return html;
+}
+function showConcept(id){
+  var n=null;for(var i=0;i<nodes.length;i++){if(nodes[i].id===id){n=nodes[i];break;}}
+  if(!n)return;
+  var vids=(cvIdx[id]||[]).map(function(r){return r.vid;});
+  vids=vids.filter(function(vid,i){return vids.indexOf(vid)===i;});
+  vids.sort(function(a,b){return(VT[b]?VT[b].views||0:0)-(VT[a]?VT[a].views||0:0);});
+  var html='<div class="back" onclick="showCategories()">← 돌아가기</div>';
+  html+='<div class="cat-head">'+esc(n.label)+' — '+vids.length+'개 영상</div>';
+  vids.forEach(function(vid){html+=videoCard(vid,n.label);});
+  document.getElementById("content").innerHTML=html;
+}
+document.getElementById("q").addEventListener("input",function(){
+  clearTimeout(window._st);var val=this.value.trim();
+  window._st=setTimeout(function(){doSearch(val);},300);
+});
+function doSearch(q){
+  if(!q){showCategories();return;}
+  var nq=norm(q);
+  var cHits=nodes.filter(function(n){return["video","chart","series"].indexOf(n.type)<0&&norm(n.label).indexOf(nq)>=0;}).sort(function(a,b){return(b.count||0)-(a.count||0);});
+  var segHits=[];for(var i=0;i<segs.length;i++){if(norm(segs[i].x).indexOf(nq)>=0){segHits.push(segs[i]);if(segHits.length>=200)break;}}
+  var byV={};segHits.forEach(function(s){(byV[s.v]=byV[s.v]||[]).push(s);});
+  var vidList=Object.keys(byV).map(function(vid){return VT[vid]?VT[vid]:null;}).filter(Boolean).sort(function(a,b){return(b.views||0)-(a.views||0);});
+  var html='<div class="cat-head">검색 "'+esc(q)+'" — 개념 '+cHits.length+'개 · 자막 '+segHits.length+'건 · 영상 '+vidList.length+'편</div>';
+  if(cHits.length){html+='<div class="cat-head">📂 관련 개념</div><div class="concept-grid">';cHits.slice(0,10).forEach(function(n){html+='<div class="concept-card" onclick="showConcept(\''+n.id+'\')">'+esc(n.label)+' <span class="cnt">'+(n.count||0)+'영상</span></div>';});html+='</div>';}
+  html+='<div class="cat-head">📹 관련 영상</div>';
+  vidList.slice(0,30).forEach(function(v){html+=videoCard(v.id,q);});
+  if(!vidList.length&&!cHits.length)html='<div class="empty">검색 결과가 없습니다: "'+esc(q)+'"</div>';
+  document.getElementById("content").innerHTML=html;
+}
+showCategories();
+</script>
+</body>
+</html>

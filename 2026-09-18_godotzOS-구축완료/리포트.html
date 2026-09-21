@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>godotzOS 구축 완료 리포트</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard',-apple-system,sans-serif;background:#09090b;color:#e4e4e7;padding:32px;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-size:28px;margin-bottom:4px}
+h1 em{color:#10b981;font-style:normal}
+h2{font-size:19px;color:#10b981;margin:32px 0 12px;border-bottom:1px solid #27272a;padding-bottom:6px}
+.sub{color:#a1a1aa;font-size:13px;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:16px 0}
+.card{background:#18181b;border:1px solid #27272a;border-radius:10px;padding:14px}
+.card b{display:block;font-size:24px;color:#10b981}
+.card span{font-size:12px;color:#a1a1aa}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th,td{border:1px solid #27272a;padding:8px 10px;text-align:left}
+th{background:#18181b;color:#a1a1aa;font-weight:600}
+td b{color:#10b981}
+.note{background:#18181b;border-left:3px solid #10b981;padding:10px 14px;border-radius:6px;font-size:13px;color:#a1a1aa;margin:14px 0}
+ul{margin:8px 0 8px 18px}
+li{margin:4px 0}
+.footer{margin-top:40px;color:#52525b;font-size:12px;border-top:1px solid #27272a;padding-top:14px}
+</style>
+</head>
+<body><div class="wrap">
+<h1>godotzOS <em>구축 완료 리포트</em></h1>
+<div class="sub">2026-09-18 · 개인 지식 OS — 수집·지식화·모니터링 전 파이프라인 가동</div>
+
+<div class="grid">
+<div class="card"><b>37</b><span>수집 소스 전부 green</span></div>
+<div class="card"><b>3,333+</b><span>지식 아이템</span></div>
+<div class="card"><b>36,284</b><span>knowledge_garden 노드</span></div>
+<div class="card"><b>43,137</b><span>FTS 전문검색 문서</span></div>
+</div>
+
+<h2>1. 수집 파이프라인 (자동 순환)</h2>
+<table>
+<tr><th>소스</th><th>규모</th><th>주기</th><th>상태</th></tr>
+<tr><td>GitHub 스타 온톨로지</td><td>1,352 레포</td><td>주간 + 증분</td><td><b>🟢 가동</b></td></tr>
+<tr><td>Reddit (4 서브레딧)</td><td>312+ 포스트</td><td>30분</td><td><b>🟢 가동</b></td></tr>
+<tr><td>텔레그램 저장한 글</td><td>389 메시지</td><td>5분</td><td><b>🟢 가동</b></td></tr>
+<tr><td>YouTube 30채널</td><td>433+ 영상</td><td>30분</td><td><b>🟢 가동</b></td></tr>
+<tr><td>Chrome 히스토리·검색어</td><td>26,415 URL · 1,727 검색어</td><td>스냅샷</td><td><b>✅ 완료</b></td></tr>
+<tr><td>Codex 세션 (ChatGPT 계정)</td><td>89 세션 · 114 프롬프트</td><td>스냅샷</td><td><b>✅ 완료</b></td></tr>
+</table>
+
+<h2>2. 지식화 (전사·문서)</h2>
+<table>
+<tr><th>항목</th><th>누적</th><th>비고</th></tr>
+<tr><td>YouTube 전사</td><td>18건 · 53만 자 · 13.2시간</td><td>GPU(large-v3) 12건 + CPU cron 지속</td></tr>
+<tr><td>Drive 문서</td><td>11,175건 · 7,189만 자</td><td>md/txt 전문 보관</td></tr>
+<tr><td>Drive 파일 인덱스</td><td>17,949개 · 1.89TB</td><td>메타 전수</td></tr>
+<tr><td>Gemini 대화</td><td>6편 · 74,858자</td><td>Drive 원본 발굴·수집</td></tr>
+<tr><td>Codex 세션</td><td>89개</td><td>사용자 프롬프트 114건</td></tr>
+<tr><td>브라우저 히스토리</td><td>26,415 URL · 1,727 검색어</td><td>Chrome 전수</td></tr>
+</table>
+
+<h2>3. 접근 지점</h2>
+<table>
+<tr><th>페이지</th><th>인증</th><th>내용</th></tr>
+<tr><td><a href="https://godotz.ai/os" style="color:#10b981">godotz.ai/os</a></td><td>로그인</td><td>KPI · 14일 수집 차트 · 소스 상태 · 최근 항목</td></tr>
+<tr><td><a href="https://godotz.ai/ontology.html" style="color:#10b981">godotz.ai/ontology.html</a></td><td>공개</td><td>스타 1,391 온톨로지 카테고리·설치상태 지도</td></tr>
+<tr><td>지식 DB</td><td>로컬</td><td>knowledge.db — FTS5 통합 전문검색 (`search-knowledge "키워드"`)</td></tr>
+</table>
+
+<h2>4. 구성 요소</h2>
+<ul>
+<li><b>수집 데몬</b> pm2 godotz-os — watcher 3종(github/youtube/reddit RSS) + ingest 큐 + 온톨로지 재생성</li>
+<li><b>전사 루프</b> pm2 godotz-transcribe-loop — 미전사 영상 GPU(large-v3)→CPU(int8) 자동 폴백, 2건/사이클</li>
+<li><b>통합 검색</b> FTS5 43,137문서 + <code>search-knowledge</code> CLI</li>
+<li><b>프롬프트 템플릿</b> /verify · /handoff · /mine</li>
+<li><b>Prime Agent 연동</b> 스킬 796 · MCP 6종 · 하네스 메모리/스펙</li>
+</ul>
+
+<h2>5. 대기 항목 (사용자 입력)</h2>
+<ul>
+<li>쿠팡 Open API 키 → coupang 티켓 3건 해제</li>
+<li>ChatGPT 데이터 내보내기 클릭 → 대화 전체 자동 DB화 (cron 10분 감지)</li>
+<li>Gemini Takeout → My Activity 전체 확장</li>
+<li>카카오톡 QR 로그인 → 개인채팅 수집 시작</li>
+</ul>
+
+<div class="note">보안: 개인 대화 원문·자격증명은 공개 페이지 미포함. 대화 원문 리뷰는 godotz.ai 로그인 경로(서버 static, harnessGate)로만 제공.</div>
+
+<div class="footer">godotzOS · 생성 2026-09-18 · prime-agent 자율 구축 · 데이터: knowledge.db / os.db / GODOTZ-OS.md</div>
+</div></body></html>
